@@ -1,3 +1,9 @@
 *
 !public/
 !.gitignore
+/public/avatars/*
+/public/mt5-downloads-icons/*
+/public/payment-proof/*
+/public/payment-wallets-barcodes/*
+/public/payment-wallets-icons/*
+/public/kyc/*

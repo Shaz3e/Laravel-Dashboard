@@ -1,0 +1,178 @@
+::selection {
+    background-color: var(--themeColor);
+    color: #fff;
+}
+
+
+/* Scroll bar */
+
+ ::-webkit-scrollbar {
+    background: linear-gradient(to top, #816827, #ffda17);
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e1e1e !important;
+    border-radius: 5px;
+}
+
+
+/* ::-webkit-scrollbar-thumb:hover {} */
+
+
+/* Body */
+
+.master {
+    background-image: unset;
+    background: linear-gradient(to left bottom, #816827, #ffda17);
+}
+
+
+/* Box */
+
+.master .box {
+    box-shadow: 10px 10px 10px #000000a9, -10px -10px 10px #000000a9;
+    border-radius: 10px;
+}
+
+
+/* Box Header */
+
+.master .box .header {
+    background-color: #0c0c0c
+}
+
+.master .box .header img {
+    width: 100%;
+    max-width: 300px;
+}
+
+
+/* Box Steps */
+
+.master .box .step .step__divider {
+    background-color: #d1b000;
+}
+
+.master .box .step .step__item .step__icon {
+    background-color: #2b2b2b;
+    color: #a3a3a3;
+    font-size: 16px;
+}
+
+.master .box .step .step__item.active .step__icon {
+    background-color: #d1b000;
+    color: black;
+}
+
+
+/* Box Content */
+
+.master .box .main {
+    background-color: #0c0c0c;
+}
+
+
+/* Button */
+
+.master .box .main .button {
+    background-color: #d1b000;
+    color: black;
+    font-weight: bold;
+}
+
+
+/* List */
+
+.master .box .main .alert {
+    background-color: #d1b000;
+    color: black;
+}
+
+
+/* List */
+
+.master .box .main .list {
+    border-color: #1e1e1e;
+    color: #a5a5a5;
+}
+
+.master .box .main .list .list__item {
+    border-color: #1e1e1e;
+}
+
+.master .box .main .list .list__item.list__title {
+    background-color: #1e1e1e;
+}
+
+.master .box .main .list .list__item--permissions span {
+    background-color: #1e1e1e;
+}
+
+
+/* Tabs */
+
+.master .box .main .tabs .tab-label {
+    background: transparent;
+    color: #4d4d4d;
+    border-radius: 10px;
+}
+
+.master .box .main .tabs .tab-input:checked+.tab-label {
+    color: #a5a5a5;
+}
+
+.master .box .main .tabs .tab .form-group {
+    margin: 20px 0;
+}
+
+.master .box .main .tabs .tab .form-group label {
+    color: #a5a5a5;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.master .box .main .tabs .tab .form-group input,
+.master .box .main .tabs .tab .form-group select {
+    background: #0c0c0c;
+    color: #a5a5a5;
+    border-color: #4d4d4d;
+}
+
+.master .box .main .tabs .tab .form-group input[type=radio] {
+    background: #0c0c0c;
+    color: #a5a5a5;
+    border-color: #4d4d4d;
+    margin: 0;
+}
+
+.master .box .main .tabs .tab .block input[type='radio']+label {
+    background-color: #141414;
+}
+
+.master .box .main .tabs .tab .block input[type='radio']:checked~.info {
+    background-color: #141414;
+}
+
+.master .box .main .tabs .tab .block input[type='radio']:checked~.info::-webkit-scrollbar {
+    background: #1e1e1e !important;
+    width: 12px;
+}
+
+.master .box .main .tabs .tab .block input[type='radio']:checked~.info::-webkit-scrollbar-thumb {
+    background: #ffda17 !important;
+    border-radius: 5px;
+}
+
+.master .box .main .tabs .tab .block input[type='radio']:checked+label {
+    background-color: #1e1e1e;
+    border: 1px solid black;
+}
+
+.master .box .main .tabs .tab .block .info {
+    background: transparent;
+}

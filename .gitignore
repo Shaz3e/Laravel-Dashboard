@@ -4,8 +4,10 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/installed
 /vendor
 .env
+.env.example
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -17,3 +19,15 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/_resource
+/public/mt5-downloads-icons/*
+/public/payment-proof/*
+/public/payment-wallets-barcodes/*
+/public/payment-wallets-icons/*
+/public/kyc/*
+/public/email-page-design/*
+/app/mt5-downloads-icons/*
+/app/payment-proof/*
+/app/payment-wallets-barcodes/*
+/app/payment-wallets-icons/*
+/app/kyc/*

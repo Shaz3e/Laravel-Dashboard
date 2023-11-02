@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Forex Back Office
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Forex Trading System
+This system works with MT5 API
 
-## About Laravel
+### User Menu & Route
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Menu                                           | Routes                                 | Status               |
+| ---------------------------------------------- | -------------------------------------- | -------------------- |
+| Profile                                        |                                        |                      |
+|  - My Profile                                  | profile                                | :white_large_square: |
+|  - Edit Profile                                | profile/edit                           | :white_large_square: |
+|  - Change Passwrod                             | profile/change-password                | :white_large_square: |
+| Clients                                        | clients                                | :white_check_mark: |
+| IB Clients                                     | ib-clients                             | :white_large_square: |
+| IB Referrals                                   | ib-referrals                           | :white_large_square: |
+| Transactions                                   | transactions                           | :white_large_square: |
+|  - Account Ledger                              | transactions/account-ledger            | :white_large_square: |
+|  - Internal Transfers                          | transactions/internal-transfers        | :white_large_square: |
+| Payment Wallets                                | payment-wallets                        | :white_large_square: |
+| MT5 Groups                                     |                                        |                      |
+|  - All Groups (foreach)                        | mt5-groups/group-name/{group_name}     | :white_check_mark:   |
+|  - Hidden Routes (trading_account)             | mt5-groups/mt5-login/{trading_account} | :white_check_mark:   |
+| Manager users                                  |                                        |                      |
+|  - Create new user                             | users/create                           | :white_check_mark:   |
+|  - View All users                              | users                                  | :white_check_mark:   |
+|  - - Hidden Route (Login as Client)            | clients/{id}/login                     | :white_large_square: |
+|  - - Hidden Route (Deposit)                    | clients/{id}/deposit                   | :white_large_square: |
+|  - - Hidden Route (Withdraw)                   | clients/{id}/withdraw                  | :white_large_square: |
+|  - - Hidden Route (Transfers)                  | clients/{id}/transfers                 | :white_large_square: |
+|  - - Hidden Route (Ledger)                     | clients/{id}/ledger                    | :white_large_square: |
+|  - - Hidden Route (View All Trading Accounts)  | clients/{id}/trading-accounts          | :white_large_square: |
+|  - - Hidden Route (Add Trading Account)        | clients/{id}/add-trading-accounts      | :white_large_square: |
+|  - - Hidden Route (Create New Trading Account) | clients/{id}/new-trading-accounts      | :white_large_square: |
+|  - - Hidden Route (Edit Trading Account)       | clients/{id}/edit-trading-accounts     | :white_large_square: |
+| Manage Roles                                   |                                        |                      |
+|  - Create new Role                             | user-roles/create                      | :white_check_mark:   |
+|  - View All Roles                              | user-roles                             | :white_check_mark:   |
+| Departments                                    |                                        |                      |
+|  - Create new Departments                      | departments/create                     | :white_check_mark:   |
+|  - View All Departments                        | departments                            | :white_check_mark:   |
+| Manage Status & Type                           |                                        |                      |
+|  - Account Types                               | manage-status/account-types            | :white_check_mark:   |
+|  - Account Status                              | manage-status/account-status           | :white_check_mark:   |
+|  - Transaction Status                          | manage-status/transaction-status       | :white_check_mark:   |
+|  - KYC Status                                  | manage-status/kyc-status               | :white_check_mark:   |
+|  - Client Status                               | manage-status/client-status            | :white_check_mark:   |
+|  - IB Status                                   | manage-status/ib-status                | :white_check_mark:   |
+| App Settings                                   |                                        |                      |
+|  - Basic Settings                              | app-settings/basic                     | :white_check_mark:   |
+|  - Brand Settings                              | app-settings/brand-setting             | :white_check_mark:   |
+|  - Automate Trnasactions                       | app-settings/automate-transaction      | :white_check_mark:   |
+|  - Google reCaptcha                            | app-settings/google-recaptcha          | :white_check_mark:   |
+|  - Bank Account                                | app-settings/bank-account              | :white_check_mark:   |
+| Mail Settings                                  |                                        |                      |
+|  - Email Setup                                 | mail-settings/email-setup              | :white_large_square: |
+| MT5 Setings                                    |                                        |                      |
+|  - Basic Setings                               | mt5-settings/basic                     | :white_check_mark:   |
+|  - Downloads                                   | mt5-settings/downloads                 | :white_check_mark:   |
+|  - Web Trader                                  | mt5-settings/web-trader                | :white_check_mark:   |
+| Locations                                      |                                        |                      |
+|  - Countries                                   | locations/countries                    | :white_check_mark: |
+|  - States                                      | locations/states                       | :white_check_mark: |
+|  - Cities                                      | locations/cities                       | :white_check_mark: |
+| Logout                                         | logout                                 | :white_large_square: |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Clients Menu and Route
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Menu                | Routes                     | Status               |
+| ------------------- | -------------------------- | -------------------- |
+| Profile             |                            |                      |
+|  - My Profile       | profile                    | :white_large_square: |
+|  - My Account       | my-account                 | :white_large_square: |
+|  - Wallet           | wallet                     | :white_large_square: |
+|  - Chagne Password  | change-password            | :white_large_square: |
+| My Referral         | my-referrals               | :white_large_square: |
+| Deposits / Withdraw |                            |                      |
+|  - Wallet Ledger    | my-ledger/wallet-ledger    | :white_large_square: |
+|  - Deposit          | my-ledger/deposit          | :white_large_square: |
+|  - Withdraw         | my-ledger/withdraw         | :white_large_square: |
+| Internal Transfers  |                            |                      |
+|  - Transfer History | my-transfers/history       | :white_large_square: |
+|  - Wallet to MT5    | my-transfers/wallet-to-mt5 | :white_large_square: |
+|  - MT5 to Wallet    | my-transfers/mt5-to-wallet | :white_large_square: |
+| Online Chat         | TawkTo Integration         | :white_large_square: |
+| Web Trader          | web-trader                 | :white_large_square: |
+| Downloads           | downloads                  | :white_large_square: |
+| Logout              | logout                     | :white_large_square: |
 
-## Learning Laravel
+### Extra Routes
+| Controller      | Routes                | Status               |
+| --------------- | --------------------- | -------------------- |
+| Login           | login                 | :white_large_square: |
+| Register        | register              | :white_large_square: |
+| Forgot Password | reset/password        | :white_large_square: |
+| Reset Password  | reset/{email}/{token} | :white_large_square: |
+| Lock            | locked-out            | :white_large_square: |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ ### Features to be added
+ - [ ] Help Desk
+ - [ ] Email Editor

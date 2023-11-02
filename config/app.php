@@ -70,7 +70,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -141,7 +142,7 @@ return [
 
     'maintenance' => [
         'driver' => 'file',
-        // 'store' => 'redis',
+        // 'store'  => 'redis',
     ],
 
     /*
@@ -159,7 +160,14 @@ return [
         /*
          * Package Service Providers...
          */
-
+        /**
+         * Spatie Permissions
+         */
+        Spatie\Permission\PermissionServiceProvider::class,
+        /**
+         * Laravel Installer
+         */
+        Shaz3e\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -168,6 +176,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
     ])->toArray(),
 
     /*
@@ -183,6 +192,37 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        /**
+         * Yajra Datatables
+         */
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        
+        /**
+         * MT5 Requests
+         */
+        'MT5Request' => App\Helpers\Mt5Requests::class,
+        /**
+         * Log Activity
+         */
+        'LogActivity' => App\Helpers\LogActivity::class,
+
+        /**
+         * Login History
+         */
+        'LoginHistory' => App\Helpers\LoginHistory::class,
+
+        /**
+         * Laravel Installer
+         */
+        RachidLaasri\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
     ])->toArray(),
 
+    /**
+     * Hash the Data when error occurs
+     */
+    'debug_blacklist' => [
+        '_COOKIE' => array_keys($_COOKIE),
+        '_SERVER' => array_keys($_SERVER),
+        '_ENV' => array_keys($_ENV),
+    ],
 ];
