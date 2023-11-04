@@ -259,15 +259,7 @@
                 $(element).removeClass('is-invalid');
             }
         });
-
-        // Generate Button
-        $('#generatePasswordBtn').click(function(e) {
-            let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let result = '';
-            for (let i = 0; i < 16; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            $("#password").val(result);
-        });
     </script>
+    {{-- Generate Random password --}}
+    {{ GeneratePasswordJS('generatePasswordBtn', 'password') }}
 @endsection

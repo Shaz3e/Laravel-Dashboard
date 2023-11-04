@@ -58,7 +58,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="text" name="password" class="form-control" id="password"
+                                    <input type="password" name="password" class="form-control" id="password"
                                         value="{{ old('password') }}" password="true" minlength="8" maxlength="255"
                                         required />
                                 </div>

@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use App\Models\States;
-use App\Models\Cities;
+use App\Models\City;
+use App\Models\State;
 
 class CitiesController extends Controller
 {
@@ -20,7 +20,7 @@ class CitiesController extends Controller
     {
 
         // if ($request->status != null) {
-        //     $statusUpdate = Cities::where('id', $request->id)->update([
+        //     $statusUpdate = City::where('id', $request->id)->update([
         //         'is_active' => $request->status,
         //     ]);
         //     Session::flash('message', [
@@ -31,7 +31,7 @@ class CitiesController extends Controller
         //     LogActivity::addToLog($request, 'Viewed city');
         // }
 
-        // $dataSet = Cities::select(
+        // $dataSet = City::select(
         //     'cities.*',
         //     'states.state_name as stateName',
         //     'countries.name as countryName',
@@ -44,7 +44,7 @@ class CitiesController extends Controller
 
         if ($request->status != null) {
 
-            $statusUpdate = States::where('id', $request->id)->update([
+            $statusUpdate = State::where('id', $request->id)->update([
                 'is_active' => $request->status,
             ]);
             Session::flash('message', [
@@ -53,7 +53,7 @@ class CitiesController extends Controller
             LogActivity::addToLog($request, 'Change status of city');
         }
 
-        $dataSet = Cities::select(
+        $dataSet = City::select(
             'cities.*',
             'states.state_name as stateName',
             'countries.name as countryName',
@@ -67,7 +67,7 @@ class CitiesController extends Controller
 
     public function create()
     {
-        $dataSet = States::orderBy('state_name', 'ASC')->get();
+        $dataSet = State::orderBy('state_name', 'ASC')->get();
         return view($this->view . '.create', compact('dataSet'));
     }
 
@@ -97,7 +97,7 @@ class CitiesController extends Controller
             return redirect()->back()->withInput();
         } else {
 
-            $data = new Cities();
+            $data = new City();
             $data->state_id = $request->state_id;
             $data->city_name = $request->city_name;
             $data->is_active = $request->is_active;
@@ -123,7 +123,7 @@ class CitiesController extends Controller
 
     public function show(string $id)
     {
-        $data = Cities::find($id);
+        $data = City::find($id);
         if ($data) {
             return view($this->view . '.edit', compact('data'));
         } else {
@@ -135,9 +135,9 @@ class CitiesController extends Controller
 
     public function edit(string $id)
     {
-        $data = Cities::find($id);
+        $data = City::find($id);
         if ($data) {
-            $dataSet = States::orderBy('state_name', 'ASC')->get();
+            $dataSet = State::orderBy('state_name', 'ASC')->get();
             return view($this->view . '.edit', compact('data', 'dataSet'));
         } else {
             return redirect($this->route)->with('warning', [
@@ -164,7 +164,7 @@ class CitiesController extends Controller
             ],
         );
 
-        $data = Cities::find($id);
+        $data = City::find($id);
         $data->state_id = $request->state_id;
         $data->city_name = $request->city_name;
         $data->is_active = $request->is_active;
@@ -197,8 +197,8 @@ class CitiesController extends Controller
 
         global $request;
 
-        if (Cities::where('id', $id)->exists()) {
-            $result = Cities::destroy($id);
+        if (City::where('id', $id)->exists()) {
+            $result = City::destroy($id);
             if ($result) {
                 Session::flash('message', [
                     'text' => 'City has been deleted',
@@ -219,7 +219,7 @@ class CitiesController extends Controller
 
     public function getCitiesByStates($state_id)
     {
-        $cities = Cities::where('state_id', $state_id)->get();
+        $cities = City::where('state_id', $state_id)->get();
         return response()->json($cities);
     }
 }

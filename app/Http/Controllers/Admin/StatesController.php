@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
-
-use App\Models\Countries;
+use App\Models\Country;
+use App\Models\State;
 use App\Models\States;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
 
 class StatesController extends Controller
 {
@@ -24,7 +22,7 @@ class StatesController extends Controller
 
         if ($request->status != null) {
 
-            $statusUpdate = States::where('id', $request->id)->update([
+            $statusUpdate = State::where('id', $request->id)->update([
                 'is_active' => $request->status,
             ]);
             Session::flash('message', [
@@ -33,7 +31,7 @@ class StatesController extends Controller
             LogActivity::addToLog($request, 'Change status of state');
         }
 
-        $dataSet = States::select(
+        $dataSet = State::select(
             'states.*',
             'countries.name as countryName',
             'countries.flag as flag'
@@ -53,7 +51,7 @@ class StatesController extends Controller
     public function create()
     {
 
-        $dataSet = Countries::orderBy('name', 'ASC')->get();
+        $dataSet = Country::orderBy('name', 'ASC')->get();
         return view($this->view . '.create', compact('dataSet'));
     }
 
@@ -82,7 +80,7 @@ class StatesController extends Controller
             ]);
             return redirect()->back()->withInput();
         } else {
-            $data = new States();
+            $data = new State();
             $data->country_id = $request->country_id;
             $data->state_name = $request->state_name;
             $data->is_active = $request->is_active;
@@ -108,7 +106,7 @@ class StatesController extends Controller
     public function show(string $id)
     {
 
-        $data = States::find($id);
+        $data = State::find($id);
         if ($data) {
             return view($this->view . '.edit', compact('data'));
         } else {
@@ -122,9 +120,9 @@ class StatesController extends Controller
     public function edit(string $id)
     {
 
-        $data = States::find($id);
+        $data = State::find($id);
         if ($data) {
-            $dataSet = Countries::orderBy('name', 'ASC')->get();
+            $dataSet = Country::orderBy('name', 'ASC')->get();
             return view($this->view . '.edit', compact('data', 'dataSet'));
         } else {
             return redirect($this->route)->with('warning', [
@@ -152,7 +150,7 @@ class StatesController extends Controller
             ],
         );
 
-        $data = States::find($id);
+        $data = State::find($id);
         $data->country_id = $request->country_id;
         $data->state_name = $request->state_name;
         $data->is_active = $request->is_active;
@@ -185,8 +183,8 @@ class StatesController extends Controller
     {
         global $request;
 
-        if (States::where('id', $id)->exists()) {
-            $result = States::destroy($id);
+        if (State::where('id', $id)->exists()) {
+            $result = State::destroy($id);
             if ($result) {
                 Session::flash('message', [
                     'text' => 'State has been deleted',
@@ -207,7 +205,7 @@ class StatesController extends Controller
 
     public function getStatesByCountry(Request $request, string $country_id)
     {
-        $states = States::where('country_id', $country_id)->get();
+        $states = State::where('country_id', $country_id)->get();
         return response()->json($states);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\LogActivity;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -44,7 +46,7 @@ class UserController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'username' => 'nullable|unique:users',
+                'username' => 'nullable|regex:/^[a-zA-Z0-9]*$/|max:64|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8|max:64',
                 'first_name' => 'required|max:64',
@@ -53,6 +55,7 @@ class UserController extends Controller
                 'mobile' => 'nullable|unique:users',
             ],
             [
+                'username.regex' => 'Username must contain alphabet or number no special character or spaces are allowed.',
                 'username.unique' => 'The username has already been taken.',
                 'email.required' => 'The email field is required.',
                 'email.unique' => 'The email has already been taken.',
@@ -147,7 +150,106 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if ($request->has('security')) {
+        $data = User::find($id);
+
+        // Validate Profile
+
+        if ($request->has('profile')) {
+
+            $validator = Validator::make(
+                [
+                    'username' => 'nullable|regex:/^[a-zA-Z0-9]*$/|max:64|unique:users,username,' . $id,
+                    'email' => 'required|email|unique:users,email,' . $id,
+                    'password' => 'required|min:8|max:64',
+                    'first_name' => 'required|max:64',
+                    'last_name' => 'required|max:64',
+                    'dob' => 'nullable|date_format:Y-m-d',
+                    'mobile' => 'nullable|unique:users,mobile,' . $id,
+                ],
+                [
+                    'username.max' => 'The username must not be greater than 64 characters.',
+                    'username.unique' => 'The username has already been taken.',
+                    'email.required' => 'The email field is required.',
+                    'email.unique' => 'The email has already been taken.',
+                    'password.required' => 'The password field is required.',
+                    'password.min' => 'The password must not be less than 8 characters.',
+                    'password.max' => 'The password must not be greater than 64 characters.',
+                    'first_name.required' => 'First name is required.',
+                    'first_name.max' => 'First name must not be greater than 64 characters.',
+                    'last_name.required' => 'Last name is required.',
+                    'last_name.max' => 'Last name must not be greater than 64 characters.',
+                    'dob.date_format' => 'Date of birth must be a valid date.',
+                    'mobile.unique' => 'The mobile has already been taken.',
+                ]
+            );
+
+            // Update profile            
+            $data->username = $request->username;
+            $data->email = $request->email;
+            $data->first_name = $request->first_name;
+            $data->last_name = $request->last_name;
+            $data->dob = $request->dob;
+            $data->mobile = $request->mobile;
+            $data->zip_code = $request->zip_code;
+            $data->company = $request->company;
+            $data->house_number = $request->house_number;
+            $data->address1 = $request->address1;
+            $data->address2 = $request->address2;
+        }
+        // Update Location
+        elseif ($request->has('location')) {
+
+            // Validate Data
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'zip_code' => 'required|numeric',
+                    'country' => [
+                        'required',
+                        function ($attribute, $value, $fail) {
+                            if (!DB::table('countries')->where('id', $value)->exists()) {
+                                $fail("The selected $attribute is not valid.");
+                            }
+                        },
+                    ],
+                    'state' => [
+                        'required',
+                        function ($attribute, $value, $fail) {
+                            if (!DB::table('states')->where('id', $value)->exists()) {
+                                $fail("The selected $attribute is not valid.");
+                            }
+                        },
+                    ],
+                    'city' => [
+                        'required',
+                        function ($attribute, $value, $fail) {
+                            if (!DB::table('cities')->where('id', $value)->exists()) {
+                                $fail("The selected $attribute is not valid.");
+                            }
+                        },
+                    ],
+                ],
+                [
+                    'zip_code.required' => 'The zip code field is required.',
+                    'zip_code.numeric' => 'The zip code must be a number.',
+                    'country.required' => 'The country field is required.',
+                    'country.exists' => 'The country is not valid.',
+                    'state.required' => 'The state field is required.',
+                    'state.exists' => 'The state is not valid.',
+                    'city.required' => 'The city field is required.',
+                    'city.exists' => 'The city is not valid.',
+                ],
+            );
+
+            // Save Data
+            $data->zip_code = $request->zip_code;
+            $data->country = $request->country;
+            $data->state = $request->state;
+            $data->city = $request->city;
+        }
+
+        elseif ($request->has('security')) {
+
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -157,76 +259,29 @@ class UserController extends Controller
                     'password.required' => 'The password field is required.',
                     'password.min' => 'The password must not be less than 8 characters.',
                     'password.max' => 'The password must not be greater than 64 characters.',
-                ]
+                ],
             );
 
-            if ($validator->fails()) {
-                Session::flash('error', [
-                    'text' => $validator->errors()->first(),
-                ]);
-                return redirect()->back()->withInput();
-            }
-            $user = User::find($id);
-            $user->update([
-                'password' => Hash::make($request->input('password')),
-            ]);
-            return redirect()->back()->with('message', [
-                'text' => 'Password updated successfully.',
-            ]);
+            $data->password = Hash::make($request->password);
         }
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'username' => 'nullable|unique:users,username,' . $id,
-                'email' => 'required|email|unique:users,email,' . $id,
-                'first_name' => 'required|max:64',
-                'last_name' => 'required|max:64',
-                'dob' => 'nullable|date_format:Y-m-d',
-                'mobile' => 'nullable|unique:users,mobile,'.$id,
-            ],
-            [
-                'username.unique' => 'The username has already been taken.',
-                'email.required' => 'The email field is required.',
-                'email.unique' => 'The email has already been taken.',
-                'first_name.required' => 'First name is required.',
-                'first_name.max' => 'First name must not be greater than 64 characters.',
-                'last_name.required' => 'Last name is required.',
-                'last_name.max' => 'Last name must not be greater than 64 characters.',
-                'dob.date_format' => 'Date of birth must be a valid date.',
-                'mobile.unique' => 'The mobile has already been taken.',
-            ]
-        );
-
-        if ($validator->fails()) {
+        if($validator->fails()){
             Session::flash('error', [
                 'text' => $validator->errors()->first(),
             ]);
             return redirect()->back()->withInput();
-        }
+        }else{
+            
 
-        $data = User::find($id);
-        $data->username = $request->username;
-        $data->email = $request->email;
-        $data->password = Hash::make($request->password);
-        $data->first_name = $request->first_name;
-        $data->last_name = $request->last_name;
-        $data->dob = $request->dob;
-        $data->mobile = $request->mobile;
-        $data->country = $request->country;
-        $data->state = $request->state;
-        $data->city = $request->city;
-        $data->zip_code = $request->zip_code;
-        $data->company = $request->company;
-        $data->house_number = $request->house_number;
-        $data->address1 = $request->address1;
-        $data->address2 = $request->address2;
+            DB::enableQueryLog();
 
         $data->save();
+        dd(DB::getQueryLog());
 
         return redirect($this->route)->with('message', [
             'text' => 'User updated successfully.',
         ]);
+        }
     }
 
     /**

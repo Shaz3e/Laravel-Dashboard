@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Countries;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,7 @@ class CountriesController extends Controller
     {
         if ($request->status != null) {
 
-            $statusUpdate = Countries::where('id', $request->id)->update([
+            $statusUpdate = Country::where('id', $request->id)->update([
                 'is_active' => $request->status,
             ]);
             Session::flash('message', [
@@ -33,7 +34,7 @@ class CountriesController extends Controller
             ]);
             LogActivity::addToLog($request, 'Change status of country');
         }
-        $countries = Countries::all();
+        $countries = Country::all();
         LogActivity::addToLog($request, 'Viewed countries');
         
         return view($this->view . '.index', 
@@ -109,7 +110,7 @@ class CountriesController extends Controller
             $custom_filename = str_replace(' ', '-', $request->name) . '.' . $ext;
             $flag = $request->file('flag')->storeAs($this->directory, $custom_filename);
 
-            $data = new Countries();
+            $data = new Country();
             $data->name = $request->name;
             $data->alpha2 = $request->alpha2;
             $data->alpha3 = $request->alpha3;
@@ -142,7 +143,7 @@ class CountriesController extends Controller
      */
     public function show(string $id)
     {
-        $data = Countries::find($id);
+        $data = Country::find($id);
         if ($data) {
             return view($this->view . '.edit', compact('data'));
         } else {
@@ -158,7 +159,7 @@ class CountriesController extends Controller
     public function edit(string $id)
     {
         $path = storage_path('app/storage/');
-        $data = Countries::find($id);
+        $data = Country::find($id);
         if ($data) {
             return view($this->view . '.edit', compact('data', 'path'));
         } else {
@@ -215,7 +216,7 @@ class CountriesController extends Controller
             ],
         );
 
-        $data = Countries::find($id);
+        $data = Country::find($id);
         $data->name = $request->name;
         $data->alpha2 = $request->alpha2;
         $data->alpha3 = $request->alpha3;
@@ -263,8 +264,8 @@ class CountriesController extends Controller
     {
         global $request;
 
-        if (Countries::where('id', $id)->exists()) {
-            $result = Countries::destroy($id);
+        if (Country::where('id', $id)->exists()) {
+            $result = Country::destroy($id);
             if ($result) {
                 Session::flash('message', [
                     'text' => 'Country has been deleted',
@@ -288,7 +289,7 @@ class CountriesController extends Controller
      */
     public function getCountryCode($countryId)
     {
-        $country = Countries::where('id', $countryId)->first();
+        $country = Country::where('id', $countryId)->first();
 
         // return response()->json(['calling_code' => $country->calling_code]);
         

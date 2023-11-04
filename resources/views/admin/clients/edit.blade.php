@@ -37,6 +37,7 @@
 
             <div class="row">
 
+                {{-- Side Bar --}}
                 <div class="col-md-3">
                     <!-- Profile Image -->
                     <div class="card card-primary card-outline" style="height: calc(100% - 15px)">
@@ -108,29 +109,35 @@
                             @method('put')
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <input type="text" name="username" class="form-control" id="username"
+                                                value="{{ old('username', $data->username) }}" maxlength="64" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="first_name">First Name</label>
                                             <input type="text" name="first_name" class="form-control" id="first_name"
-                                                value="{{ old('first_name', $data->first_name) }}" maxlength="255"
+                                                value="{{ old('first_name', $data->first_name) }}" maxlength="64"
                                                 required />
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="last_name">Last Name</label>
                                             <input type="text" name="last_name" class="form-control" id="last_name"
-                                                value="{{ old('last_name', $data->last_name) }}" maxlength="255"
-                                                required />
+                                                value="{{ old('last_name', $data->last_name) }}" maxlength="64" required />
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <div class="form-group">
                                             <label for="dob">Date Of Birth</label>
                                             <div class="input-group date" id="reservationdate" data-target-input="nearest">
                                                 <input type="text" name="dob"
                                                     class="form-control datetimepicker-input" data-target="#reservationdate"
-                                                    value="{{ old('dob', $data->dob) }}" required id="dob" />
+                                                    value="{{ old('dob', $data->dob) }}" id="dob" />
                                                 <div class="input-group-append" data-target="#reservationdate"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -150,8 +157,8 @@
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" name="email" class="form-control" id="email"
-                                                value="{{ old('email', $data->email) }}" email="true"
-                                                maxlength="255" required />
+                                                value="{{ old('email', $data->email) }}" email="true" maxlength="255"
+                                                required />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -159,7 +166,7 @@
                                             <label for="mobile">Phone Number</label>
                                             <input type="text" name="mobile" class="form-control" id="mobile"
                                                 value="{{ old('mobile', $data->mobile) }}" number="true"
-                                                maxlength="255" required />
+                                                maxlength="255" />
                                         </div>
                                     </div>
                                 </div>
@@ -172,34 +179,6 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12">
                                         <div class="form-group">
-                                            <label for="zip_code">Zip / Postal Code</label>
-                                            <input type="text" class="form-control" value="{{ $data->zip_code }}"
-                                                disabled />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="country">Country</label>
-                                            <input type="text" class="form-control"
-                                                value="{{ GetCountry($data->country) }}" disabled />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="state">State</label>
-                                            <input type="text" class="form-control"
-                                                value="{{ GetState($data->state) }}" disabled />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="city">City</label>
-                                            <input type="text" class="form-control"
-                                                value="{{ GetCity($data->city) }}" disabled />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <div class="form-group">
                                             <label for="company">Company</label>
                                             <input type="text" name="company" class="form-control" id="company"
                                                 value="{{ old('company', $data->company) }}" maxlength="255" />
@@ -209,8 +188,7 @@
                                         <div class="form-group">
                                             <label for="house_number">House / Flat No.</label>
                                             <input type="text" name="house_number" class="form-control"
-                                                id="house_number"
-                                                value="{{ old('house_number', $data->house_number) }}"
+                                                id="house_number" value="{{ old('house_number', $data->house_number) }}"
                                                 maxlength="255" required />
                                         </div>
                                     </div>
@@ -229,8 +207,34 @@
                                                 value="{{ old('address2', $data->address2) }}" maxlength="255" />
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <small>Zip Code</small><br>
+                                        <strong>{{ $data->zip_code }}</strong>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <small>Country</small><br>
+                                        <strong>{{ GetCountry($data->country) }}</strong>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <small>State</small><br>
+                                        <strong>{{ GetState($data->state) }}</strong>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <small>City</small><br>
+                                        <strong>{{ GetCity($data->city) }}</strong>
+                                    </div>
                                 </div>
                             </div>
+                            {{-- /.card-body --}}
+
+                            <div class="card-footer">
+                                <button type="submit" name="profile" class="btn btn-flat btn-success">Update</button>
+                                <p class="m-0 mt-2 text text-muted">Last Updated: {{ TimeAgo($data->updated_at) }} on
+                                    {{ DateFormat($data->updated_at) . ' ' . TimeFormat($data->updated_at) }}
+                                </p>
+                            </div>
+                            {{-- /.card-footer --}}
                         </form>
                     </div>
 
@@ -259,7 +263,8 @@
                                             <select name="country" class="form-control country" id="country" required>
                                                 <option value="">-- Select Country --</option>
                                                 @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
+                                                    <option value="{{ $country->id }}"
+                                                        {{ $country->id == $data->country ? 'selected' : '' }}>
                                                         {{ $country->name }}
                                                     </option>
                                                 @endforeach
@@ -435,15 +440,6 @@
             }
         });
 
-        $('#generatePasswordBtn').click(function(e) {
-            let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let result = '';
-            for (let i = 0; i < 8; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            $("#password").val(result);
-        });
-
         $('#submitForm').validate({
             errorElement: 'span',
             errorPlacement: function(error, element) {
@@ -500,4 +496,6 @@
             }
         });
     </script>
+    {{-- Generate Random password --}}
+    {{ GeneratePasswordJS('generatePasswordBtn', 'password') }}
 @endsection

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Expr\Assign;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -67,13 +66,23 @@ class AdminController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:64',
-                'username' => 'nullable|max:64|unique:admins',
-                'password' => 'required|max:255',
+                'username' => 'nullable|regex:/^[a-zA-Z0-9]*$/|max:64|unique:admins',
+                'password' => 'required|max:64',
                 'email' => 'required|unique:admins',
                 'role_id' => 'required|numeric',
                 'is_active' => 'required|boolean',
             ],
-            [],
+            [
+                'username.regex' => 'Username must contain alphabet or number no special character or spaces are allowed.',
+                'username.unique' => 'The username has already been taken.',
+                'username.max' => 'Username must not be greater than 64 characters.',
+                'email.unique' => 'The email has already been taken.',
+                'email.required' => 'The email field is required.',
+                'password.required' => 'The password field is required.',
+                'password.max' => 'The password must not be greater than 64 characters.',
+                'role_id.required' => 'The role field is required.',
+                'is_active.required' => 'The status field is required.',
+            ],
         );
 
         if ($validator->fails()) {
@@ -186,12 +195,16 @@ class AdminController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:64',
-                'username' => 'nullable|max:64|unique:admins,username,' . $id,
+                'username' => 'nullable|regex:/^[a-zA-Z0-9]*$/|max:64|unique:admins,username,' . $id,
                 'email' => 'required|unique:admins,email,' . $id,
                 'role_id' => 'required|numeric',
                 'is_active' => 'required|boolean',
             ],
-            [],
+            [
+                'username.regex' => 'Username must contain alphabet or number no special character or spaces are allowed.',
+                'username.unique' => 'The username has already been taken.',
+                'username.max' => 'Username must not be greater than 64 characters.',
+            ],
         );
 
         if ($validator->fails()) {
