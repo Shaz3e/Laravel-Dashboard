@@ -296,7 +296,6 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::get('profile', [UserProfileController::class, 'View'])->name('profile.view');
     Route::post('profile', [UserProfileController::class, 'Update'])->name('profile.update');
-    Route::post('profile/kyc', [UserProfileController::class, 'UpdateKyc'])->name('profile.kyc');
 
     // Customer Support
     Route::resource('customer-support', CustomerSupportController::class);

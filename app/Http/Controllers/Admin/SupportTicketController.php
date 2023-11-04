@@ -192,16 +192,6 @@ class SupportTicketController extends Controller
                         'title' => $request->title,
                         'message' => $request->message,
                     ];
-
-                    $emailSent = Mail::to($mailData['email'])->send(new NewSupportTicketNotificationUser($mailData));
-                    $adminEmail = Mail::to(DiligentCreators('to_email'))->send(new NewSupportTicketNotification($mailData));
-
-                    if ($emailSent) {
-                        LogActivity::addToLog($request, $mailData['name'] . ' Opened a new ticket# ' . $data->ticket_number . ' and information has also sent to client');
-                    }
-                    if ($adminEmail) {
-                        LogActivity::addToLog($request, $mailData['name'] . ' Opened a new ticket# ' . $data->ticket_number . ' and information has also sent to backoffice staff');
-                    }
                     LogActivity::addToLog($request, 'New Ticket created by client');
                 }
 
@@ -408,16 +398,6 @@ class SupportTicketController extends Controller
                             'priority' => getSupportTicketByPriority($data->support_ticket_priority_id),
                             'title' => $data->title,
                         ];
-
-                        $emailSent = Mail::to($mailData['email'])->send(new ReplySupportTicket($mailData));
-                        $adminEmail = Mail::to(DiligentCreators('to_email'))->send(new AdminReplySupportTicket($mailData));
-
-                        if ($emailSent) {
-                            LogActivity::addToLog($request, $mailData['name'] . ' Opened a new ticket# ' . $data->ticket_number . ' and information has also sent to client');
-                        }
-                        if ($adminEmail) {
-                            LogActivity::addToLog($request, $mailData['name'] . ' Opened a new ticket# ' . $data->ticket_number . ' and information has also sent to backoffice staff');
-                        }
                     }
                     Session::flash('message', [
                         'text' => "Ticket reply is updated",

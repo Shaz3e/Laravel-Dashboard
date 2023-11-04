@@ -120,9 +120,20 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
         $data = User::find($id);
+
+        if ($request->status != null) {
+            User::where('id',$request->id)->update([
+                'is_verified' => $request->status,
+                'email_verified_at' => now(),
+            ]);
+            Session::flash('message', [
+                'text' => "Status has been changed successfully",
+            ]);
+            return redirect()->back();
+        }
 
         // Caculate Age
         $dateOfBirth = $data->dob;
@@ -152,136 +163,173 @@ class UserController extends Controller
     {
         $data = User::find($id);
 
-        // Validate Profile
-
         if ($request->has('profile')) {
-
-            $validator = Validator::make(
-                [
-                    'username' => 'nullable|regex:/^[a-zA-Z0-9]*$/|max:64|unique:users,username,' . $id,
-                    'email' => 'required|email|unique:users,email,' . $id,
-                    'password' => 'required|min:8|max:64',
-                    'first_name' => 'required|max:64',
-                    'last_name' => 'required|max:64',
-                    'dob' => 'nullable|date_format:Y-m-d',
-                    'mobile' => 'nullable|unique:users,mobile,' . $id,
-                ],
-                [
-                    'username.max' => 'The username must not be greater than 64 characters.',
-                    'username.unique' => 'The username has already been taken.',
-                    'email.required' => 'The email field is required.',
-                    'email.unique' => 'The email has already been taken.',
-                    'password.required' => 'The password field is required.',
-                    'password.min' => 'The password must not be less than 8 characters.',
-                    'password.max' => 'The password must not be greater than 64 characters.',
-                    'first_name.required' => 'First name is required.',
-                    'first_name.max' => 'First name must not be greater than 64 characters.',
-                    'last_name.required' => 'Last name is required.',
-                    'last_name.max' => 'Last name must not be greater than 64 characters.',
-                    'dob.date_format' => 'Date of birth must be a valid date.',
-                    'mobile.unique' => 'The mobile has already been taken.',
-                ]
-            );
-
-            // Update profile            
-            $data->username = $request->username;
-            $data->email = $request->email;
-            $data->first_name = $request->first_name;
-            $data->last_name = $request->last_name;
-            $data->dob = $request->dob;
-            $data->mobile = $request->mobile;
-            $data->zip_code = $request->zip_code;
-            $data->company = $request->company;
-            $data->house_number = $request->house_number;
-            $data->address1 = $request->address1;
-            $data->address2 = $request->address2;
-        }
-        // Update Location
-        elseif ($request->has('location')) {
-
-            // Validate Data
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'zip_code' => 'required|numeric',
-                    'country' => [
-                        'required',
-                        function ($attribute, $value, $fail) {
-                            if (!DB::table('countries')->where('id', $value)->exists()) {
-                                $fail("The selected $attribute is not valid.");
-                            }
-                        },
-                    ],
-                    'state' => [
-                        'required',
-                        function ($attribute, $value, $fail) {
-                            if (!DB::table('states')->where('id', $value)->exists()) {
-                                $fail("The selected $attribute is not valid.");
-                            }
-                        },
-                    ],
-                    'city' => [
-                        'required',
-                        function ($attribute, $value, $fail) {
-                            if (!DB::table('cities')->where('id', $value)->exists()) {
-                                $fail("The selected $attribute is not valid.");
-                            }
-                        },
-                    ],
+                    'username' => 'required|max:64|unique:users,username,' . $id,
+                    'first_name' => 'required|max:255|regex:/^[a-zA-Z]+$/',
+                    'last_name' => 'required|max:255|regex:/^[a-zA-Z]+$/',
+                    'dob' => 'required|date|max:255',
+                    'email' => 'required|email|max:255|unique:users,email,' . $id,
+                    'mobile' => 'required|numeric|unique:users,mobile,' . $id,
+                    'house_number' => 'required|max:255',
+                    'address1' => 'required|max:255',
+                    'address1' => 'nullable|max:255',
                 ],
                 [
-                    'zip_code.required' => 'The zip code field is required.',
-                    'zip_code.numeric' => 'The zip code must be a number.',
-                    'country.required' => 'The country field is required.',
-                    'country.exists' => 'The country is not valid.',
-                    'state.required' => 'The state field is required.',
-                    'state.exists' => 'The state is not valid.',
-                    'city.required' => 'The city field is required.',
-                    'city.exists' => 'The city is not valid.',
+                    // Usrname
+                    'username.required' => 'Username is required',
+                    'username.max' => 'Username must be less then 255 characters',
+                    'username.unique' => 'This username has already been taken',
+                    
+                    // First Name
+                    'first_name.required' => 'First Name is required',
+                    'first_name.regax' => 'First Name consist only on alphabet',
+                    'first_name.max' => 'First Name must be less then 255 characters',
+
+                    // Last Name
+                    'last_name.required' => 'Last Name is required',
+                    'last_name.regax' => 'Last Name consist only on alphabet',
+                    'last_name.max' => 'Last Name must be less then 255 characters',
+
+                    // Date of birth
+                    'dob.required' => 'Date of birth is required',
+                    'dob.max' => 'Date of birth must be less then 255 characters',
+
+                    // Email
+                    'email.required' => 'Email is required',
+                    'email.max' => 'Email must be less then 255 characters',
+                    'email.email' => 'Email is invalid',
+                    'email.unique' => 'This email already have an account',
+
+                    // Mobile
+                    'mobile.required' => 'Mobile is required',
+                    'mobile.email' => 'Mobile is invalid',
+                    'mobile.max' => 'Mobile must be less then 255 characters',
+                    'mobile.unique' => 'This mobile number already have an account',
+
+                    // House / Flat No
+                    'house_number.required' => 'House / Flat No is required',
+                    'house_number.max' => 'House / Flat No must be less then 255 characters',
+
+                    // Address
+                    'address1.required' => 'Address is required',
+                    'address1.max' => 'Address must be less then 255 characters',
+                    'address2.max' => 'Address Line 2 must be less then 255 characters',
                 ],
             );
 
-            // Save Data
+
+            /**
+             * Check Age limit as defined in App Basic Settings
+             * @param age_limit
+             */
+            $dateOfBirth = $request->dob;
+            $age_limit = Carbon::parse($dateOfBirth)->age;
+
+            if ($age_limit <= DiligentCreators('age_limit') && $age_limit != 0) {
+                Session::flash('error', [
+                    'text' => 'Age should be ' . DiligentCreators('age_limit') . ' years old.',
+                ]);
+                return redirect()->back()->withInput();
+            }
+
+            $data->first_name = $request->first_name;
+            $data->last_name = $request->last_name;
+            $data->dob = $request->dob;
+            $data->email = $request->email;
+            $data->mobile = $request->mobile;
+            $data->house_number = $request->house_number;
+            $data->address1 = $request->address1;
+            $data->address2 = $request->address2;
+
+            LogActivity::addToLog($request, 'profile updated');
+        } elseif ($request->has('location')) {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'zip_code' => 'required|max:10',
+                    'country' => 'required',
+                    'state' => 'required',
+                    'city' => 'required',
+                ],
+                [
+                    // Zip Code
+                    'zip_code.required' => 'Zip Code is required',
+                    'zip_code.max' => 'Zip Code must be less then 255 characters',
+
+                    // Country
+                    'country.required' => 'Country is required',
+                    'country.max' => 'Country must be less then 255 characters',
+
+                    // State
+                    'state.required' => 'State is required',
+                    'state.max' => 'State must be less then 255 characters',
+
+                    // City
+                    'city.required' => 'City is required',
+                    'city.max' => 'City must be less then 255 characters',
+                ],
+            );
+
             $data->zip_code = $request->zip_code;
             $data->country = $request->country;
             $data->state = $request->state;
             $data->city = $request->city;
-        }
 
-        elseif ($request->has('security')) {
-
+            LogActivity::addToLog($request, 'user location updated');
+        } elseif ($request->has('security')) {
             $validator = Validator::make(
                 $request->all(),
                 [
                     'password' => 'required|min:8|max:64',
                 ],
                 [
-                    'password.required' => 'The password field is required.',
-                    'password.min' => 'The password must not be less than 8 characters.',
-                    'password.max' => 'The password must not be greater than 64 characters.',
+                    // Password
+                    'password.required' => 'Password is required',
+                    'password.min' => 'Password must be at least 8 characters',
+                    'password.max' => 'Password must be less than 64 characters',
                 ],
             );
 
             $data->password = Hash::make($request->password);
+
+            LogActivity::addToLog($request, 'user password changed');
+            /**
+             * Prepare mail data
+             */
+            $mailData = [
+                'first_name' => $data->first_name,
+                'last_name' => $data->last_name,
+                'email' => $data->email,
+                'password' => $request->password,
+            ];
+
+            /**
+             * Send Email
+             */
         }
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             Session::flash('error', [
                 'text' => $validator->errors()->first(),
             ]);
             return redirect()->back()->withInput();
-        }else{
-            
-
-            DB::enableQueryLog();
-
-        $data->save();
-        dd(DB::getQueryLog());
-
-        return redirect($this->route)->with('message', [
-            'text' => 'User updated successfully.',
-        ]);
+        } else {
+            $result = $data->save();
+            if ($result) {
+                Session::flash('message', [
+                    'text' => "Data has been Saved",
+                ]);
+                LogActivity::addToLog($request, 'Client updated');
+            } else {
+                Session::flash('error', [
+                    'text' => "Something went wrong, please try again",
+                ]);
+            }
         }
+        return redirect()->back()->withInput();
     }
 
     /**

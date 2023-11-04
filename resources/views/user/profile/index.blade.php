@@ -79,16 +79,6 @@
                                                 class="px-2 py-1 rounded text-white bg-theme">{{ GetCity($data->city) }}</span>
                                         </li>
                                     @endif
-                                    <li class="list-group-item text d-flex justify-content-between align-items-center">
-                                        <b>Trading Accounts</b>
-                                        <span
-                                            class="px-2 py-1 rounded text-white bg-theme">{{ $totalTradingAccountdataSet }}</span>
-                                    </li>
-                                    <li class="list-group-item text d-flex justify-content-between align-items-center">
-                                        <b>Wallet</b>
-                                        <span
-                                            class="px-2 py-1 rounded text-white bg-theme">${{ number_format(GetWalletAmount(auth()->user()->id), 2) }}</span>
-                                    </li>
                                 </ul>
                             </div>
                             <!-- /.card-body -->
@@ -106,20 +96,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link {{ isset($_GET['tab']) && $_GET['tab'] == 'profile' ? 'active' : '' }}"
                                             href="?tab=profile">Edit Profile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ isset($_GET['tab']) && $_GET['tab'] == 'kyc' ? 'active' : '' }}"
-                                            href="?tab=kyc">KYC
-                                            @if (auth()->user()->kyc_status_id == 1)
-                                                <span class="badge badge-warning">Pending</span>
-                                            @elseif (auth()->user()->kyc_status_id == 2)
-                                                <span class="badge badge-danger">Rejected</span>
-                                            @elseif (auth()->user()->kyc_status_id == 4)
-                                                <span class="badge badge-primary">Hold</span>
-                                            @else
-                                                <span class="badge badge-success">Approved</span>
-                                            @endif
-                                        </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link {{ isset($_GET['tab']) && $_GET['tab'] == 'security' ? 'active' : '' }}"
@@ -143,7 +119,7 @@
                                                 <div class="col-sm-10  feedback">
                                                     <input type="email" name="email"
                                                         value="{{ old('email', $data->email) }}" class="form-control"
-                                                        id="email" placeholder="Email" disabled />
+                                                        id="email" placeholder="Email" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -151,7 +127,7 @@
                                                 <div class="col-sm-10  feedback">
                                                     <input type="text" name="first_name" class="form-control"
                                                         id="first_name" value="{{ old('first_name', $data->first_name) }}"
-                                                        placeholder="First Name" disabled />
+                                                        placeholder="First Name" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -159,7 +135,7 @@
                                                 <div class="col-sm-10  feedback">
                                                     <input type="text" name="last_name" class="form-control"
                                                         id="last_name" value="{{ old('last_name', $data->last_name) }}"
-                                                        placeholder="Last Name" disabled />
+                                                        placeholder="Last Name" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -176,11 +152,9 @@
                                                 <div class="col-sm-10 feedback">
                                                     <input type="text" name="mobile" class="form-control"
                                                         id="mobile" value="{{ old('mobile', $data->mobile) }}"
-                                                        placeholder="Mobile" disabled />
+                                                        placeholder="Mobile" />
                                                 </div>
                                             </div>
-                                            <!-- <div class="form-group row">                                                                                                                                                                                  </div>
-                                                                                                                                                                                                                                                                            </div> -->
                                             <div class="form-group row">
                                                 <label for="company" class="col-sm-2 col-form-label">Company</label>
                                                 <div class="col-sm-10  feedback">
@@ -221,241 +195,6 @@
                                                     <button type="submit" class="btn btn-danger">Save Changes</button>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <!-- /.tab-pane -->
-
-                                    {{-- KYC Dcoument --}}
-                                    <div class="tab-pane {{ isset($_GET['tab']) && $_GET['tab'] == 'kyc' ? 'active' : '' }}"
-                                        id="kyc">
-                                        <form action="{{ route('profile.kyc') }}" method="post" id="uploadKYC"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            {{-- KYC content Pending  --}}
-                                            @if (auth()->user()->kyc_status_id == 1)
-                                                <div class="row">
-
-                                                    <div class="col-lg-4 col-md-4 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_card_number">Card Number</label>
-                                                            <input type="text" name="id_card_number"
-                                                                id="id_card_number" class="form-control" required />
-                                                            <small class="form-text text-muted">National ID Card
-                                                                number</small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-8 col-md-8 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_proof_address">Proof Address</label>
-                                                            <input type="text" name="id_proof_address"
-                                                                id="id_proof_address" class="form-control" required />
-                                                            <small class="form-text text-muted">ID Proof Address</small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_side_a">Front Side</label>
-                                                            <div class="input-group">
-                                                                <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input"
-                                                                        id="id_side_a" name="id_side_a"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        filesize="2048" required>
-                                                                    <label class="custom-file-label" for="id_side_a">
-                                                                        <span id="show_id_side_a">Choose
-                                                                            File</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <small class="form-text text-muted">Color copy of
-                                                                identification (Front Side)</small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_side_b">Back Side</label>
-                                                            <div class="input-group">
-                                                                <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input"
-                                                                        id="id_side_b" name="id_side_b"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        filesize="2048" required>
-                                                                    <label class="custom-file-label" for="id_side_b">
-                                                                        <span id="show_id_side_b">Choose
-                                                                            File</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-
-                                                            <small class="form-text text-muted">Color copy of
-                                                                identification (Back Side)</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p class="muted">Attaching your proof of identification and address
-                                                    documents will fast the process of opening your trading account. You
-                                                    may also upload your proof of identification and address via
-                                                    <strong>{{ DiligentCreators('site_name') }}</strong> at a later
-                                                    stage.
-                                                </p>
-                                                <p>
-                                                    Documents required must be in jpg, jpeg, png, and should
-                                                    be 2MB file size.
-                                                </p>
-                                                <div class="form-group">
-                                                    <label for="proof_address">
-                                                        Proof of address
-                                                    </label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input"
-                                                                id="proof_address" name="proof_address"
-                                                                accept="image/jpeg, image/jpg, image/png"
-                                                                filesize="2048" required>
-                                                            <label class="custom-file-label" for="proof_address">
-                                                                <span id="show_proof_address">
-                                                                    Choose File
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p class="muted">
-                                                    Passport, national identity or other document issued by an
-                                                    independent and reliable source that carries your photo.
-                                                    Photograph, signature, issue & expiry dates, personal
-                                                    details including serial number must be clearly visible
-                                                </p>
-                                                <p>
-                                                    Documents required must be in jpg, jpeg, png, and should
-                                                    be 2MB file size.
-                                                </p>
-                                                <button type="submit" name="uploadKYC" class="btn btn-primary">
-                                                    Upload Documents
-                                                </button>
-                                                {{-- KYC content Reject  --}}
-                                            @elseif (auth()->user()->kyc_status_id == 2)
-                                                <div class="alert alert-danger">
-                                                    Your KYC documents was not approved kindly
-                                                    contact us via email at
-                                                    {{ DiligentCreators('to_email') == null ? env('MAIL_FROM_ADDRESS') : DiligentCreators('to_email') }}
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-lg-4 col-md-4 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_side_a">Card Number</label>
-                                                            <input type="text" name="id_card_number"
-                                                                id="id_card_number" class="form-control" required />
-                                                            <small class="form-text text-muted">National ID Card
-                                                                number</small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-8 col-md-8 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_proof_address">Proof Address</label>
-                                                            <input type="text" name="id_proof_address"
-                                                                id="id_proof_address" class="form-control" required />
-                                                            <small class="form-text text-muted">ID Proof Address</small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_side_a">Front Side</label>
-                                                            <div class="input-group">
-                                                                <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input"
-                                                                        id="id_side_a" name="id_side_a"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        filesize="2048" required>
-                                                                    <label class="custom-file-label" for="id_side_a">
-                                                                        <span id="show_id_side_a">Choose
-                                                                            File</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <small class="form-text text-muted">Color copy of
-                                                                identification (Front Side)</small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="id_side_b">Back Side</label>
-                                                            <div class="input-group">
-                                                                <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input"
-                                                                        id="id_side_b" name="id_side_b"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        filesize="2048" required>
-                                                                    <label class="custom-file-label" for="id_side_b">
-                                                                        <span id="show_id_side_b">Choose
-                                                                            File</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-
-                                                            <small class="form-text text-muted">Color copy of
-                                                                identification (Back Side)</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p class="muted">Attaching your proof of identification and address
-                                                    documents will fast the process of opening your trading account. You
-                                                    may also upload your proof of identification and address via
-                                                    <strong>{{ DiligentCreators('site_name') }}</strong> at a later
-                                                    stage.
-                                                </p>
-                                                <p>
-                                                    Documents required must be in jpg, jpeg, png, and should
-                                                    be 2MB file size.
-                                                </p>
-                                                <div class="form-group">
-                                                    <label for="proof_address">
-                                                        Proof of address
-                                                    </label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input"
-                                                                id="proof_address" name="proof_address"
-                                                                accept="image/jpeg, image/jpg, image/png"
-                                                                filesize="2048" required>
-                                                            <label class="custom-file-label" for="proof_address">
-                                                                <span id="show_proof_address">
-                                                                    Choose File
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p class="muted">
-                                                    Passport, national identity or other document issued by an
-                                                    independent and reliable source that carries your photo.
-                                                    Photograph, signature, issue & expiry dates, personal
-                                                    details including serial number must be clearly visible
-                                                </p>
-                                                <p>
-                                                    Documents required must be in jpg, jpeg, png, and should
-                                                    be 2MB file size.
-                                                </p>
-                                                <button type="submit" name="uploadKYC" class="btn btn-primary">
-                                                    Upload Documents
-                                                </button>
-                                                {{-- KYC content On Success  --}}
-                                            @elseif (auth()->user()->kyc_status_id == 3)
-                                                <div class="alert alert-success">
-                                                    Your KYC is approved successfully.
-                                                </div>
-                                                {{-- KYC content On Hold  --}}
-                                            @elseif (auth()->user()->kyc_status_id == 4)
-                                                <div class="alert bg-theme">
-                                                    Your KYC request is pending for review.
-                                                </div>
-                                            @endif
                                         </form>
                                     </div>
                                     <!-- /.tab-pane -->
