@@ -250,6 +250,24 @@ function GeneratePassword($length = 8)
 	return $password;
 }
 
+/**
+ * Generate Random Password JS
+ */
+function GeneratePasswordJS($generatePasswordBtn, $password, $length = 12)
+{
+    ?>
+    <script>
+        $('#<?php echo $generatePasswordBtn; ?>').click(function(e) {
+            let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let result = '';
+            for (let i = 0; i < <?php echo $length; ?>; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            $("#<?php echo $password; ?>").val(result);
+        });
+    </script>
+    <?php
+}
 
 /**
  * Time ago with carbon date and time
