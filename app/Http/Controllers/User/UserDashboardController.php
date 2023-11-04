@@ -12,7 +12,6 @@ class UserDashboardController extends Controller
 
     public function dashboard(Request $request)
     {
-
         return view(
             $this->view . 'dashboard'
         );

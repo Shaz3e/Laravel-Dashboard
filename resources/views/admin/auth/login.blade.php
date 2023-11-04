@@ -10,11 +10,12 @@
 @endsection
 
 @section('content')
-    <div class="register-box">        
+    <div class="register-box">
 
         <div class="text-center mb-2">
             <a href="{{ DiligentCreators('site_url') }}">
-                <img class="img-fluid" src="{{ asset('/') }}{{ DiligentCreators('site_logo') }}" alt="{{ DiligentCreators('site_name') == null ? config('app.name') : DiligentCreators('site_name') }}">
+                <img class="img-fluid" src="{{ asset('/') }}{{ DiligentCreators('site_logo') }}"
+                    alt="{{ DiligentCreators('site_name') == null ? config('app.name') : DiligentCreators('site_name') }}">
             </a>
         </div>
 
@@ -46,13 +47,6 @@
                             </div>
                         </div>
                     </div>
-                    @if (DiligentCreators('google_recaptcha') == 1)
-                        <div class="col-12">
-                            <div class="form-group">
-                                <div class="g-recaptcha" data-sitekey="{{ DiligentCreators('google_site_key') }}"></div>
-                            </div>
-                        </div>
-                    @endif
                     <button type="submit" id="loginDashboard"
                         class="btn btn-primary btn-block mb-2 theme-btn">Login</button>
                 </form>

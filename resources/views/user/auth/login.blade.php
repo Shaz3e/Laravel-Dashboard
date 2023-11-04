@@ -14,7 +14,8 @@
 
         <div class="text-center mb-2">
             <a href="{{ DiligentCreators('site_url') }}">
-                <img class="img-fluid" src="{{ asset('/') }}{{ DiligentCreators('site_logo') }}" alt="{{ DiligentCreators('site_name') == null ? config('app.name') : DiligentCreators('site_name') }}">
+                <img class="img-fluid" src="{{ asset('/') }}{{ DiligentCreators('site_logo') }}"
+                    alt="{{ DiligentCreators('site_name') == null ? config('app.name') : DiligentCreators('site_name') }}">
             </a>
         </div>
 
@@ -58,60 +59,6 @@
                                 <div class="g-recaptcha" data-sitekey="{{ DiligentCreators('google_site_key') }}">
                                 </div>
                             </div>
-                        </div>
-                    @endif
-                    @if (
-                        $dataSet['link_one'] != '' ||
-                            $dataSet['link_two'] != '' ||
-                            $dataSet['link_three'] != '' ||
-                            $dataSet['link_four'] != '' ||
-                            $dataSet['link_five'] != '' ||
-                            $dataSet['link_six'] != '' ||
-                            $dataSet['link_seven'] != '')
-                        <div class="col-12">
-                            <ul class="pl-0">
-                                @if ($dataSet['link_one'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_one'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Anti-Money Laundering
-                                            Policy</a></li>
-                                @endif
-                                @if ($dataSet['link_two'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_two'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Client Agreement</a></li>
-                                @endif
-                                @if ($dataSet['link_three'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_three'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Deposit
-                                            Withdrawal
-                                            Policy</a></li>
-                                @endif
-                                @if ($dataSet['link_four'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_four'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Privacy
-                                            Policy</a></li>
-                                @endif
-                                @if ($dataSet['link_five'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_five'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Refund
-                                            Policy</a></li>
-                                @endif
-                                @if ($dataSet['link_six'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_six'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Risk Warning Notice</a></li>
-                                @endif
-                                @if ($dataSet['link_seven'] != '')
-                                    <li class="m-0 text-mode text-justify d-block"><a href="{{ $dataSet['link_seven'] }}"
-                                            class="text-theme" target="_blank"><i class="fa-solid fa-arrow-right-long"></i>
-                                            Terms and
-                                            Conditions</a></li>
-                                @endif
-                            </ul>
                         </div>
                     @endif
                     <button type="submit" class="btn btn-primary btn-block mb-2 theme-btn">Login</button>
