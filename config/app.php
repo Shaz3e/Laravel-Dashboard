@@ -193,15 +193,6 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         /**
-         * Yajra Datatables
-         */
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        
-        /**
-         * MT5 Requests
-         */
-        'MT5Request' => App\Helpers\Mt5Requests::class,
-        /**
          * Log Activity
          */
         'LogActivity' => App\Helpers\LogActivity::class,
@@ -210,11 +201,6 @@ return [
          * Login History
          */
         'LoginHistory' => App\Helpers\LoginHistory::class,
-
-        /**
-         * Laravel Installer
-         */
-        RachidLaasri\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
     ])->toArray(),
 
     /**
