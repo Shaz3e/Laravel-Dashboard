@@ -26,7 +26,6 @@ class AdminSeeder extends Seeder
                 'email' => 'superadmin@email.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
-                'role_id' => 1,
             ],
             [
                 'name' => 'Admin',
@@ -34,7 +33,6 @@ class AdminSeeder extends Seeder
                 'email' => 'admin@email.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
-                'role_id' => 2,
             ],
             [
                 'name' => 'Manager',
@@ -42,7 +40,6 @@ class AdminSeeder extends Seeder
                 'email' => 'manager@email.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
-                'role_id' => 3,
             ],
             [
                 'name' => 'Staff',
@@ -50,7 +47,6 @@ class AdminSeeder extends Seeder
                 'email' => 'staff@email.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
-                'role_id' => 4,
             ],
         ];
 

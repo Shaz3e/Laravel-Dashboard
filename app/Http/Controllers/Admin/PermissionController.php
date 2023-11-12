@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
+use function Laravel\Prompts\text;
+
 class PermissionController extends Controller
 {
     protected $view = 'admin.app-permissions.';
@@ -45,7 +47,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::where('id', '!=', 1)->get();
         return view($this->view . 'create', compact('roles'));
     }
 
@@ -87,11 +89,9 @@ class PermissionController extends Controller
                     $role->givePermissionTo($permission);
                 }
             }
-
-            Session::flash('success', [
-                'text' => 'Permission created successfully.',
+            return redirect($this->route)->with('message', [
+                'text' => 'Permission created successfully.'
             ]);
-            return redirect($this->route);
         }
     }
 
@@ -116,7 +116,7 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-        $roles = Role::all();
+        $roles = Role::where('id', '!=',1)->get();
         $data = Permission::find($id);
 
         return view(
@@ -165,13 +165,18 @@ class PermissionController extends Controller
 
         // Attach the updated roles
         $roleIds = $request->role_ids;
-        $permission->syncRoles($roleIds);
+        $validRoleIds = Role::where('guard_name', 'admin')
+            ->whereIn('id', $roleIds)
+            ->pluck('id')
+            ->toArray();
 
-        Session::flash('success', [
+        $permission->syncRoles($validRoleIds);
+
+        // $permission->syncRoles($roleIds);
+
+        return redirect($this->route)->with('message', [
             'text' => 'Permission updated successfully.',
         ]);
-
-        return redirect($this->route);
     }
 
     /**
