@@ -11,15 +11,20 @@ class LogActivity
 {
     public static function addToLog(Request $request, $subject)
     {
+        $adminUser = Auth::guard('admin')->user();
+        $regularUser = Auth::user();
+
         $log = [];
-        $log['subject'] = $subject;
+        if ($adminUser && $adminUser->id !== 1) {
+            $log['subject'] = $adminUser->name.' ('.$adminUser->email.') '.$subject;
+        }else{
+            $log['subject'] = $regularUser ? $regularUser->first_name.' '.$regularUser->last_name.' ('.$regularUser->email.') ' : null.' '.$subject;
+        }
         $log['url'] = $request->fullUrl();
         $log['method'] = $request->method();
         $log['ip'] = $request->ip();
         $log['agent'] = $request->header('user-agent');
 
-        $adminUser = Auth::guard('admin')->user();
-        $regularUser = Auth::user();
 
         if ($adminUser && $adminUser->id !== 1) {
             $log['admin_id'] = $adminUser->id;
