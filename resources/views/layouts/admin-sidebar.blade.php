@@ -245,43 +245,42 @@
                 </li>
 
                 {{-- Locations --}}
-                @if (Auth::guard('admin')->user()->id == 1)
-                    <li class="nav-item {{ request()->is('admin/locations/*') ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)"
-                            class="nav-link {{ request()->is('admin/locations/*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-earth-asia"></i>
-                            <p>Locations
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ URL::to('admin/locations/countries') }}"
-                                    class="nav-link {{ request()->is('admin/locations/countries') || request()->is('admin/locations/countries/*') ? 'active' : '' }}
-                            {{ request()->is('admin/settiongs/locations/countries/*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Countries</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('admin/locations/states') }}"
-                                    class="nav-link {{ request()->is('admin/locations/states') || request()->is('admin/locations/states/*') ? 'active' : '' }}
-                                {{ request()->is('admin/settiongs/locations/states/*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>States</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('admin/locations/cities') }}"
-                                    class="nav-link {{ request()->is('admin/locations/cities') || request()->is('admin/locations/cities/*') ? 'active' : '' }}
-                                {{ request()->is('admin/settiongs/locations/cities/*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cities</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
+                
+                <li class="nav-item {{ request()->is('admin/locations/*') ? 'menu-open' : '' }}">
+                    <a href="javascript:void(0)"
+                        class="nav-link {{ request()->is('admin/locations/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-earth-asia"></i>
+                        <p>Locations
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ URL::to('admin/locations/countries') }}"
+                                class="nav-link {{ request()->is('admin/locations/countries') || request()->is('admin/locations/countries/*') ? 'active' : '' }}
+                        {{ request()->is('admin/settiongs/locations/countries/*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Countries</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to('admin/locations/states') }}"
+                                class="nav-link {{ request()->is('admin/locations/states') || request()->is('admin/locations/states/*') ? 'active' : '' }}
+                            {{ request()->is('admin/settiongs/locations/states/*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>States</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to('admin/locations/cities') }}"
+                                class="nav-link {{ request()->is('admin/locations/cities') || request()->is('admin/locations/cities/*') ? 'active' : '' }}
+                            {{ request()->is('admin/settiongs/locations/cities/*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cities</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                 {{-- Log Activity --}}
                 <li class="nav-item {{ request()->is('admin/log-activity/*') ? 'menu-open' : '' }}">
