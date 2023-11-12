@@ -57,7 +57,7 @@
                                 @if ($data->id != 1)
                                     <tr>
                                         <td>{{ $data->name }}</td>
-                                        <td>{{ $data->role }}</td>
+                                        <td>{{ ucwords($data->getRoleNames()->implode(', ')) }}</td>
                                         <td>{{ $data->username }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>

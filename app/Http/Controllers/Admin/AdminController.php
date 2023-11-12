@@ -27,18 +27,12 @@ class AdminController extends Controller
             Admin::where('id', $request->id)->update([
                 'is_active' => $request->status,
             ]);
-            Session::flash('message', [
+            return redirect()->back()->with('message', [
                 'text' => 'Status has been changed'
             ]);
             LogActivity::addToLog($request, 'staff has been changed');
         }
-        $dataSet = Admin::select(
-            'admins.*',
-            'roles.name as role'
-        )
-            ->leftJoin('roles', 'admins.role_id', '=', 'roles.id')
-            ->where('admins.id', '!=', 1)
-            ->get();
+        $dataSet = Admin::where('id', '!=', 1)->get();
 
         return view($this->view . 'index', compact('dataSet'));
     }
@@ -96,7 +90,6 @@ class AdminController extends Controller
             $data->username = $request->username;
             $data->password = Hash::make($request->password);
             $data->email = $request->email;
-            $data->role_id = $request->role_id;
             $data->is_active = $request->is_active;
 
             $role = Role::find($request->role_id);
@@ -216,9 +209,8 @@ class AdminController extends Controller
             $data->name = $request->name;
             $data->username = $request->username;
             $data->email = $request->email;
-            $data->role_id = $request->role_id;
             $data->is_active = $request->is_active;
-            
+
             $role = Role::find($request->role_id);
             $data->roles()->detach();
             $data->assignRole($role);

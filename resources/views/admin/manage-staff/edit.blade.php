@@ -80,8 +80,9 @@
                                                     @foreach ($rolesDataSet as $rolesData)
                                                         @if ($rolesData->id != 1)
                                                             <option value="{{ $rolesData->id }}"
-                                                                {{ $rolesData->id == old('role_id', $data->role_id) ? 'selected' : '' }}>
-                                                                {{ $rolesData->name }}</option>
+                                                                {{ in_array($rolesData->name, $data->getRoleNames()->toArray()) ? 'selected' : '' }}>
+                                                                {{ $rolesData->name }}
+                                                            </option>
                                                         @endif
                                                     @endforeach
                                                 </select>
