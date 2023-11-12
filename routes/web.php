@@ -115,9 +115,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('clients', UserController::class);
 
-        // Internal Transfers
-        Route::resource('transactions/internal-transfers', InternalTransferController::class);
-
         /**
          * Support Tickets
          */
