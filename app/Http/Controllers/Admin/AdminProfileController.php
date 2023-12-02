@@ -22,14 +22,11 @@ class AdminProfileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        global $request;
-        $dataSet = Admin::select('admins.*', 'roles.name as role_name')
-            ->leftJoin('roles', 'roles.id', 'admins.role_id')
-            ->where("admins.id", Auth::guard('admin')->user()->id)
-            ->get();
-            LogActivity::addToLog($request, 'viewed profile');
+        $id = Auth::guard('admin')->user()->id;
+        $dataSet = Admin::where('id', $id)->get();
+        LogActivity::addToLog($request, 'viewed profile');
         return view($this->view . 'index', compact('dataSet'));
     }
 
@@ -141,7 +138,7 @@ class AdminProfileController extends Controller
                     ]);
                 }
             }
-            return redirect()->back()->withInput();
+            return back();
         }
     }
 
