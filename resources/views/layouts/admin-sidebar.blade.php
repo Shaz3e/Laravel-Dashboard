@@ -32,8 +32,7 @@
 
                 {{-- Profile --}}
                 <li class="nav-item">
-                    <a href="{{ URL::to('admin') }}"
-                        class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
+                    <a href="{{ URL::to('admin') }}" class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dasbhaord</p>
                     </a>
@@ -59,7 +58,8 @@
                 </li>
 
                 {{-- Support Ticket --}}
-                <li class="nav-item {{ request()->is('admin/support-tickets/*') || request()->is('admin/support-tickets') ? 'menu-open' : '' }}">
+                <li
+                    class="nav-item {{ request()->is('admin/support-tickets/*') || request()->is('admin/support-tickets') ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
                         class="nav-link {{ request()->is('admin/support-tickets/*') || request()->is('admin/support-tickets') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-life-ring"></i>
@@ -111,66 +111,82 @@
                     </ul>
                 </li>
 
-                {{-- Manage Users --}}
+                {{-- Manage Users & Roles --}}
                 <li
-                    class="nav-item {{ request()->is('admin/manage-staff/*') || request()->is('admin/manage-staff') ? 'menu-open' : '' }}">
+                    class="nav-item {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-staff/*') || request()->is('admin/manage-roles') || request()->is('admin/manage-staff') ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/manage-staff/*') || request()->is('admin/manage-staff') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-staff/*') || request()->is('admin/manage-roles') || request()->is('admin/manage-staff') ? 'active' : '' }}">
                         <i class="fa fa-users-gear nav-icon"></i>
-                        <p>Manage Staff
+                        <p>Manage Roles & Staff
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/manage-staff/create') }}"
-                                class="nav-link {{ request()->is('admin/manage-staff/create') ? 'active' : '' }}{{ request()->is('admin/manage-staff/create/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create New Staff</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/manage-staff/') }}"
-                                class="nav-link {{ request()->is('admin/manage-staff') || request()->is('admin/manage-staff/*/edit') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All Staff</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
-                {{-- Manage Roles --}}
-                <li
-                    class="nav-item {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'menu-open' : '' }}">
-                    <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'active' : '' }}">
-                        <i class="fa fa-layer-group nav-icon"></i>
-                        <p>Manage Roles
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/manage-roles/create') }}"
-                                class="nav-link {{ request()->is('admin/manage-roles/create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create New Role</p>
+
+                        {{-- Manage Users --}}
+                        <li
+                            class="nav-item {{ request()->is('admin/manage-staff/*') || request()->is('admin/manage-staff') ? 'menu-open' : '' }}">
+                            <a href="javascript:void(0)"
+                                class="nav-link {{ request()->is('admin/manage-staff/*') || request()->is('admin/manage-staff') ? 'active' : '' }}">
+                                <i class="fa fa-users-gear nav-icon"></i>
+                                <p>Manage Staff
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/manage-staff/create') }}"
+                                        class="nav-link {{ request()->is('admin/manage-staff/create') ? 'active' : '' }}{{ request()->is('admin/manage-staff/create/*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create New Staff</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/manage-staff/') }}"
+                                        class="nav-link {{ request()->is('admin/manage-staff') || request()->is('admin/manage-staff/*/edit') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Staff</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/manage-roles/') }}"
-                                class="nav-link {{ request()->is('admin/manage-roles') || request()->is('admin/manage-roles/*/edit') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All User Roles</p>
+
+                        {{-- Manage Roles --}}
+                        <li
+                            class="nav-item {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'menu-open' : '' }}">
+                            <a href="javascript:void(0)"
+                                class="nav-link {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'active' : '' }}">
+                                <i class="fa fa-layer-group nav-icon"></i>
+                                <p>Manage Roles
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/manage-roles/create') }}"
+                                        class="nav-link {{ request()->is('admin/manage-roles/create') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create New Role</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/manage-roles/') }}"
+                                        class="nav-link {{ request()->is('admin/manage-roles') || request()->is('admin/manage-roles/*/edit') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All User Roles</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>
 
                 {{-- App Settings --}}
-                <li class="nav-item {{ request()->is('admin/app-settings/*') ? 'menu-open' : '' }}">
+                <li
+                    class="nav-item {{ request()->is('admin/app-settings') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/app-settings/*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/app-settings') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'active' : '' }}">
                         <i class="fa fa-gear nav-icon"></i>
                         <p>App Settings
                             <i class="right fas fa-angle-left"></i>
@@ -205,80 +221,108 @@
                                 <p>Google reCaptcha</p>
                             </a>
                         </li>
-                        @if (Auth::guard('admin')->user()->id == 1)
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/app-settings/') }}"
-                                class="nav-link {{ request()->is('admin/app-settings/') ? 'active' : '' }}{{ request()->is('admin/app-settings/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Optimize Dashboard</p>
+                        {{-- Mail Settings --}}
+                        <li class="nav-item {{ request()->is('admin/mail-settings/*') ? 'menu-open' : '' }}">
+                            <a href="javascript:void(0)"
+                                class="nav-link {{ request()->is('admin/mail-settings/*') ? 'active' : '' }}">
+                                <i class="fa fa-envelopes-bulk nav-icon"></i>
+                                <p>Mail Settings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/mail-settings/email-setup') }}"
+                                        class="nav-link {{ request()->is('admin/mail-settings/email-setup') ? 'active' : '' }}{{ request()->is('admin/mail-settings/email-setup/*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Email Setup</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/mail-settings/email-design') }}"
+                                        class="nav-link {{ request()->is('admin/mail-settings/email-design') ? 'active' : '' }}{{ request()->is('admin/mail-settings/email-design/*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Email Design</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        @endif
-                    </ul>
-                </li>
-
-                {{-- Mail Settings --}}
-                <li class="nav-item {{ request()->is('admin/mail-settings/*') ? 'menu-open' : '' }}">
-                    <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/mail-settings/*') ? 'active' : '' }}">
-                        <i class="fa fa-envelopes-bulk nav-icon"></i>
-                        <p>Mail Settings
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/mail-settings/email-setup') }}"
-                                class="nav-link {{ request()->is('admin/mail-settings/email-setup') ? 'active' : '' }}{{ request()->is('admin/mail-settings/email-setup/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Email Setup</p>
+                        {{-- Locations --}}
+                        <li class="nav-item {{ request()->is('admin/locations/*') ? 'menu-open' : '' }}">
+                            <a href="javascript:void(0)"
+                                class="nav-link {{ request()->is('admin/locations/*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-earth-asia"></i>
+                                <p>Locations
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/mail-settings/email-design') }}"
-                                class="nav-link {{ request()->is('admin/mail-settings/email-design') ? 'active' : '' }}{{ request()->is('admin/mail-settings/email-design/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Email Design</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                {{-- Locations --}}
-                
-                <li class="nav-item {{ request()->is('admin/locations/*') ? 'menu-open' : '' }}">
-                    <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/locations/*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-earth-asia"></i>
-                        <p>Locations
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/locations/countries') }}"
-                                class="nav-link {{ request()->is('admin/locations/countries') || request()->is('admin/locations/countries/*') ? 'active' : '' }}
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/locations/countries') }}"
+                                        class="nav-link {{ request()->is('admin/locations/countries') || request()->is('admin/locations/countries/*') ? 'active' : '' }}
                         {{ request()->is('admin/settiongs/locations/countries/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Countries</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/locations/states') }}"
-                                class="nav-link {{ request()->is('admin/locations/states') || request()->is('admin/locations/states/*') ? 'active' : '' }}
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Countries</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/locations/states') }}"
+                                        class="nav-link {{ request()->is('admin/locations/states') || request()->is('admin/locations/states/*') ? 'active' : '' }}
                             {{ request()->is('admin/settiongs/locations/states/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>States</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ URL::to('admin/locations/cities') }}"
-                                class="nav-link {{ request()->is('admin/locations/cities') || request()->is('admin/locations/cities/*') ? 'active' : '' }}
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>States</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::to('admin/locations/cities') }}"
+                                        class="nav-link {{ request()->is('admin/locations/cities') || request()->is('admin/locations/cities/*') ? 'active' : '' }}
                             {{ request()->is('admin/settiongs/locations/cities/*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Cities</p>
-                            </a>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Cities</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+                        @if (Auth::guard('admin')->user()->id == 1)
+                            {{-- Permissions --}}
+                            <li
+                                class="nav-item {{ request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions') ? 'menu-open' : '' }}">
+                                <a href="javascript:void(0)"
+                                    class="nav-link {{ request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions') ? 'active' : '' }}">
+                                    <i class="nav-icon fa-solid fa-link"></i>
+                                    <p>Permissions & Routes
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ URL::to('admin/app-permissions') }}"
+                                            class="nav-link {{ request()->is('admin/app-permissions') || request()->is('admin/app-permissions/*') ? 'active' : '' }}
+                            {{ request()->is('admin/settiongs/locations/states/*') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Permissions</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ URL::to('admin/app-permissions/routes') }}"
+                                            class="nav-link {{ request()->is('admin/app-permissions/routes') || request()->is('admin/app-permissions/routes/*') ? 'active' : '' }}
+                            {{ request()->is('admin/app-permissions/routes/*') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Routes</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            {{-- Optimize Dashboard --}}
+                            <li class="nav-item">
+                                <a href="{{ URL::to('admin/app-settings/') }}"
+                                    class="nav-link {{ request()->is('admin/app-settings') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Optimize Dashboard</p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
 
@@ -317,37 +361,6 @@
                         </li>
                     </ul>
                 </li>
-
-                {{-- Permissions --}}
-                @if (Auth::guard('admin')->user()->id == 1)
-                    <li class="nav-item {{ request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions') ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)"
-                            class="nav-link {{ request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions') ? 'active' : '' }}">
-                            <i class="nav-icon fa-solid fa-link"></i>
-                            <p>Permissions
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ URL::to('admin/app-permissions') }}"
-                                    class="nav-link {{ request()->is('admin/app-permissions') || request()->is('admin/app-permissions/*') ? 'active' : '' }}
-                                    {{ request()->is('admin/settiongs/locations/states/*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Permissions</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('admin/app-permissions/routes') }}"
-                                    class="nav-link {{ request()->is('admin/app-permissions/routes') || request()->is('admin/app-permissions/routes/*') ? 'active' : '' }}
-                                    {{ request()->is('admin/app-permissions/routes/*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Routes</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
 
                 {{-- Logout --}}
                 <li class="nav-item">
