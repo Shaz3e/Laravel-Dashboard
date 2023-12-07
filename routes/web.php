@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController as AdminAuthenticatedSessionController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\InternalTransferController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -177,7 +176,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // App Settings (Artisan Commands)
-        Route::get('app-settings', [AppSettingsController::class, 'appSettings']);
+        Route::get('app-settings', [AppSettingsController::class, 'appSettings'])->name('app-settings');
         Route::post('app-settings', [AppSettingsController::class, 'appSettingsPost'])->name('app-settings.post');
 
         // Basic Settings
