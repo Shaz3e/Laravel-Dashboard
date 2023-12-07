@@ -6,12 +6,11 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\State;
-use App\Models\States;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-class StatesController extends Controller
+class StateController extends Controller
 {
     // View & Route
     protected $view = "admin.locations.states";

@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
-use App\Models\Countries;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-class CountriesController extends Controller
+class CountryController extends Controller
 {
     // View & Route
     protected $view = "admin.locations.countries";

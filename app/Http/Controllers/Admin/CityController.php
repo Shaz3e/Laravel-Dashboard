@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\City;
 use App\Models\State;
 
-class CitiesController extends Controller
+class CityController extends Controller
 {
     // View & Route
     protected $view = "admin.locations.cities";

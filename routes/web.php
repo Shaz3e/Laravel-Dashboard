@@ -11,9 +11,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminLogActivityController;
-use App\Http\Controllers\Admin\CountriesController;
-use App\Http\Controllers\Admin\StatesController;
-use App\Http\Controllers\Admin\CitiesController;
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\StateController;
+use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\MailSettingsController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\AppSettingsController;
@@ -67,9 +67,9 @@ Route::get('error/500', function () {
  * States By Country
  * Cities By State
  */
-Route::get('/get-country-code/{countryId}', [CountriesController::class, 'getCountryCode']);
-Route::get('/states/by-country/{country_id}', [StatesController::class, 'getStatesByCountry'])->name('getStatesByCountry');
-Route::get('/cities/by-state/{state_id}', [CitiesController::class, 'getCitiesByStates'])->name('getCitiesByStates');
+Route::get('/get-country-code/{countryId}', [CountryController::class, 'getCountryCode']);
+Route::get('/states/by-country/{country_id}', [StateController::class, 'getStatesByCountry'])->name('getStatesByCountry');
+Route::get('/cities/by-state/{state_id}', [CityController::class, 'getCitiesByStates'])->name('getCitiesByStates');
 
 /*
 |--------------------------------------------------------------------------
@@ -150,9 +150,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * States
          * Cities
          */
-        Route::resource('locations/countries', CountriesController::class);
-        Route::resource('locations/states', StatesController::class);
-        Route::resource('locations/cities', CitiesController::class);
+        Route::resource('locations/countries', CountryController::class);
+        Route::resource('locations/states', StateController::class);
+        Route::resource('locations/cities', CityController::class);
 
 
         /**
