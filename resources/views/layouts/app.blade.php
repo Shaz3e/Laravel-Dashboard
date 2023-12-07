@@ -10,7 +10,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('/') }}{{ DiligentCreators('logo_small') }}" type="image/x-icon" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <script src="{{ asset('plugins/fontawesome-free/js/all.min.js') }}"></script>
     @yield('styles')
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <!-- Theme style -->
