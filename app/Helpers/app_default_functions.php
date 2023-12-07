@@ -213,24 +213,26 @@ function GetCity($id)
  */
 function GeneratePassword($length = 8)
 {
+
+	// Check if the length is within the valid range
+	if ($length < 8 || $length > 16) {
+		throw new InvalidArgumentException('The length of the password must be between 8 and 16 characters.');
+	}
+
 	// Define character pools for each type of character
 	$lowercase = "abcdefghijklmnopqrstuvwxyz";
 	$uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	$numbers = "0123456789";
-	$special = "#@!+";
+	$special = "@+!$";
 
 	// Initialize the password as an empty string
 	$password = '';
 
-	// Generate 3 random lowercase characters
-	for ($i = 0; $i < 3; $i++) {
-		$password .= $lowercase[random_int(0, strlen($lowercase) - 1)];
-	}
+	// Generate 1 random lowercase character
+	$password .= $lowercase[random_int(0, strlen($lowercase) - 1)];
 
-	// Generate 3 random uppercase characters
-	for ($i = 0; $i < 3; $i++) {
-		$password .= $uppercase[random_int(0, strlen($uppercase) - 1)];
-	}
+	// Generate 1 random uppercase character
+	$password .= $uppercase[random_int(0, strlen($uppercase) - 1)];
 
 	// Generate 1 random number
 	$password .= $numbers[random_int(0, strlen($numbers) - 1)];
