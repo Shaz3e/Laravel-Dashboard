@@ -23,12 +23,6 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        if (hasLicense() == true) {
-            Session::flash('license_error', [
-                'text' => "You are not allowed to reset password at this time. Please contact support.",
-            ]);
-            return redirect()->route('login');
-        }
         return view('user.auth.forgot-password');
     }
 

@@ -16,12 +16,6 @@ class EmailVerificationController extends Controller
     // public function FunctionName(): RedirectResponse
     public function verify(Request $request)
     {
-        if (hasLicense() == true) {
-            Session::flash('license_error', [
-                'text' => "Your email could not be verified at this time. Please contact support.",
-            ]);
-            return redirect()->route('login');
-        }
         $verifyemail = User::where('email', $request->email)->where('remember_token', $request->token)->exists();
         if ($verifyemail) {
             $data = User::where('email', $request->email)->where('remember_token', $request->token)->update(

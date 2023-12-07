@@ -22,12 +22,6 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request)
     {
-        if (hasLicense() == true) {
-            Session::flash('license_error', [
-                'text' => "You are not allowed to reset your password at this time. Please contact support.",
-            ]);
-            return redirect()->route('login');
-        }
         $checkEmailToken = DB::table('password_reset_tokens')->where('email', $request->email)->where('token', $request->token)->exists();
 
         // Validator
