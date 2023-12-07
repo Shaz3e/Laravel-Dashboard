@@ -28,8 +28,8 @@ class AppSettingsSeeder extends Seeder
             ['setting_name' => 'bcc_email', 'setting_value' => null, 'created_at' => now(), 'updated_at' => now(),],
 
             // Site Name, LOGO & URL Settings
-            ['setting_name' => 'site_name', 'setting_value' => 'Forex Back Office', 'created_at' => now(), 'updated_at' => now(),],
-            ['setting_name' => 'site_url', 'setting_value' => 'https://backofficefx.com', 'created_at' => now(), 'updated_at' => now(),],
+            ['setting_name' => 'site_name', 'setting_value' => 'Laravel Dashbaord', 'created_at' => now(), 'updated_at' => now(),],
+            ['setting_name' => 'site_url', 'setting_value' => 'https://shaz3e.com', 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'dashboard_url', 'setting_value' => null, 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'site_logo', 'setting_value' => 'logos/site_logo.png', 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'logo_small', 'setting_value' => 'logos/logo_small.png', 'created_at' => now(), 'updated_at' => now(),],

@@ -41,9 +41,9 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-tool">
                             <i class="fas fa-times"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -67,6 +67,7 @@
                                     <td>{{ $data->state_code }}</td>
                                     <td>
                                         {{ $data->countryName }}
+                                        <img class="img-fluid" width="25px" src="/{{ $data->flag }}">
                                     </td>
                                     <td>
                                         @if ($data->is_active == 1)
@@ -116,14 +117,6 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
     <script>
         $(function() {
@@ -133,10 +126,6 @@
                 "pageLength": 10,
                 "lengthChange": true,
                 "paging": false,
-                // "language": {
-                //     "info": ""
-                // }
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#dataList_wrapper .col-md-6:eq(0)');
         });
     </script>

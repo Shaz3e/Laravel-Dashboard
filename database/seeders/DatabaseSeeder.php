@@ -22,13 +22,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AppSettingsSeeder::class,
             EmailPageDesigneSeeder::class,
-            CountriesSeeder::class,
-            StatesSeeder::class,
-            // CitiesSeeder::class,
             TicketStatusSeeder::class,
             TicketPrioritySeeder::class,
             RolePermissionSeeder::class,
             AdminSeeder::class,
+            CountriesSeeder::class,
+            StatesSeeder::class,
         ]);
     }
 }
