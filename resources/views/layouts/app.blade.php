@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- Custom style -->
     <link rel="stylesheet" href="{{ asset('dist/css/customize.css') }}">
+
+    @if (DiligentCreators('google_recaptcha') == 1)
+        <script async src="https://www.google.com/recaptcha/api.js"></script>
+    @endif
 </head>
 
 <body class="hold-transition layout-fixed layout-navbar-fixed sidebar-mini @yield('body_class')">
@@ -447,10 +451,6 @@
         @endif
     @endif
     {{-- endif notification type == sweetalerts --}}
-
-    @if (DiligentCreators('google_recaptcha') == 1)
-        <script src='https://www.google.com/recaptcha/api.js'></script>
-    @endif
     @yield('scripts')
 </body>
 
