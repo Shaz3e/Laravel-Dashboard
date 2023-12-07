@@ -263,20 +263,54 @@ class AppSettingsController extends Controller
         $theme_color = AppSettings::where('setting_name', 'theme_color')->value('setting_value');
         $theme_settings_is_active = AppSettings::where('setting_name', 'theme_settings_is_active')->value('setting_value');
 
-        // Toastr Notification Visibility Setting
+        // Notification Type
+        $notification_type = AppSettings::where('setting_name', 'notification_type')->value('setting_value');
+
+        // Toastr Notification Visibility Settings
         $toastr_notification_position_class = AppSettings::where('setting_name', 'toastr_notification_position_class')->value('setting_value');
         $toastr_notification_close_button = AppSettings::where('setting_name', 'toastr_notification_close_button')->value('setting_value');
         $toastr_notification_progress_bar = AppSettings::where('setting_name', 'toastr_notification_progress_bar')->value('setting_value');
         $toastr_notification_time_out = AppSettings::where('setting_name', 'toastr_notification_time_out')->value('setting_value');
+        
+        // SweetAlerts Notification Visibility Settings
+        $sweet_alerts_type = AppSettings::where('setting_name', 'sweet_alerts_type')->value('setting_value');
+        $sweet_alerts_position = AppSettings::where('setting_name', 'sweet_alerts_position')->value('setting_value');
+        $sweet_alerts_timer = AppSettings::where('setting_name', 'sweet_alerts_timer')->value('setting_value');
+        $sweet_alerts_timer_progress_bar = AppSettings::where('setting_name', 'sweet_alerts_timer_progress_bar')->value('setting_value');        
+        $sweet_alerts_animation = AppSettings::where('setting_name', 'sweet_alerts_animation')->value('setting_value');
+        $sweet_alerts_icon_color = AppSettings::where('setting_name', 'sweet_alerts_icon_color')->value('setting_value');
+        $sweet_alerts_text_color = AppSettings::where('setting_name', 'sweet_alerts_text_color')->value('setting_value');
+        $sweet_alerts_background_color = AppSettings::where('setting_name', 'sweet_alerts_background_color')->value('setting_value');
+        $sweet_alerts_confirm_button = AppSettings::where('setting_name', 'sweet_alerts_confirm_button')->value('setting_value');
+        $sweet_alerts_cancel_button = AppSettings::where('setting_name', 'sweet_alerts_cancel_button')->value('setting_value');
+        $sweet_alerts_show_confirm_button = AppSettings::where('setting_name', 'sweet_alerts_show_confirm_button')->value('setting_value');
+
 
         $dataSet = [
             'dark_mode' => $dark_mode,
             'theme_color' => $theme_color,
             'theme_settings_is_active' => $theme_settings_is_active,
+
+            'notification_type' => $notification_type,
+
+            // Toastr Notification Visibility Settings
             'toastr_notification_position_class' => $toastr_notification_position_class,
             'toastr_notification_close_button' => $toastr_notification_close_button,
             'toastr_notification_progress_bar' => $toastr_notification_progress_bar,
             'toastr_notification_time_out' => $toastr_notification_time_out,
+
+            // SweetAlerts Notification Visibility Settings
+            'sweet_alerts_type' => $sweet_alerts_type,
+            'sweet_alerts_position' => $sweet_alerts_position,
+            'sweet_alerts_timer' => $sweet_alerts_timer,
+            'sweet_alerts_timer_progress_bar' => $sweet_alerts_timer_progress_bar,
+            'sweet_alerts_animation' => $sweet_alerts_animation,
+            'sweet_alerts_icon_color' => $sweet_alerts_icon_color,
+            'sweet_alerts_text_color' => $sweet_alerts_text_color,
+            'sweet_alerts_background_color' => $sweet_alerts_background_color,
+            'sweet_alerts_confirm_button' => $sweet_alerts_confirm_button,
+            'sweet_alerts_cancel_button' => $sweet_alerts_cancel_button,
+            'sweet_alerts_show_confirm_button' => $sweet_alerts_show_confirm_button,
         ];
         LogActivity::addToLog($request, 'Viewed Basic app settings');
         return view($this->view . 'theme.index', compact('dataSet'));
@@ -341,6 +375,7 @@ class AppSettingsController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
+                    'notification_type' => 'required',
                     'toastr_notification_position_class' => 'required',
                     'toastr_notification_close_button' => 'required',
                     'toastr_notification_progress_bar' => 'required',
@@ -352,6 +387,12 @@ class AppSettingsController extends Controller
                             }
                         },
                     ],
+                    'sweet_alerts_type' => 'required',
+                    'sweet_alerts_position' => 'required',
+                    'sweet_alerts_timer' => 'required',
+                    'sweet_alerts_timer_progress_bar' => 'required',
+                    'sweet_alerts_animation' => 'required',
+                    'sweet_alerts_show_confirm_button' => 'required',
                 ],
             );
 
@@ -362,6 +403,12 @@ class AppSettingsController extends Controller
                 return redirect()->back()->withInput();
             } else {
                 // Update or create the CRM Settings
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'notification_type'],
+                    ['setting_value' => $request->notification_type]
+                );
+
+                // Toastr Notification Visibility Settings
                 AppSettings::updateOrCreate(
                     ['setting_name' => 'toastr_notification_position_class'],
                     ['setting_value' => $request->toastr_notification_position_class]
@@ -377,6 +424,52 @@ class AppSettingsController extends Controller
                 AppSettings::updateOrCreate(
                     ['setting_name' => 'toastr_notification_time_out'],
                     ['setting_value' => $request->toastr_notification_time_out]
+                );
+
+                // SweetAlerts Notification Visibility Settings
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_type'],
+                    ['setting_value' => $request->sweet_alerts_type]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_position'],
+                    ['setting_value' => $request->sweet_alerts_position]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_timer'],
+                    ['setting_value' => $request->sweet_alerts_timer]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_timer_progress_bar'],
+                    ['setting_value' => $request->sweet_alerts_timer_progress_bar]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_animation'],
+                    ['setting_value' => $request->sweet_alerts_animation]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_icon_color'],
+                    ['setting_value' => $request->sweet_alerts_icon_color]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_text_color'],
+                    ['setting_value' => $request->sweet_alerts_text_color]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_background_color'],
+                    ['setting_value' => $request->sweet_alerts_background_color]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_confirm_button'],
+                    ['setting_value' => $request->sweet_alerts_confirm_button]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_cancel_button'],
+                    ['setting_value' => $request->sweet_alerts_cancel_button]
+                );
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'sweet_alerts_show_confirm_button'],
+                    ['setting_value' => $request->sweet_alerts_show_confirm_button]
                 );
 
                 Session::flash('message', [
