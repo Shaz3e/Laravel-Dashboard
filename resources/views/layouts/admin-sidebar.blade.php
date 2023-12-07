@@ -116,7 +116,7 @@
                     class="nav-item {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-staff/*') || request()->is('admin/manage-roles') || request()->is('admin/manage-staff') ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
                         class="nav-link {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-staff/*') || request()->is('admin/manage-roles') || request()->is('admin/manage-staff') ? 'active' : '' }}">
-                        <i class="fa fa-users-gear nav-icon"></i>
+                        <i class="fa-solid fa-hand-sparkles nav-icon"></i>
                         <p>Manage Roles & Staff
                             <i class="right fas fa-angle-left"></i>
                         </p>
@@ -157,7 +157,7 @@
                             class="nav-item {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'menu-open' : '' }}">
                             <a href="javascript:void(0)"
                                 class="nav-link {{ request()->is('admin/manage-roles/*') || request()->is('admin/manage-roles') ? 'active' : '' }}">
-                                <i class="fa fa-layer-group nav-icon"></i>
+                                <i class="fa-solid fa-wand-magic-sparkles nav-icon"></i>
                                 <p>Manage Roles
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
@@ -184,9 +184,9 @@
 
                 {{-- App Settings --}}
                 <li
-                    class="nav-item {{ request()->is('admin/app-settings') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'menu-open' : '' }}">
+                    class="nav-item {{ request()->is('admin/app-settings') || request()->is('admin/app-settings/*') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
-                        class="nav-link {{ request()->is('admin/app-settings') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/app-settings') || request()->is('admin/app-settings/*') || request()->is('admin/mail-settings/*') || request()->is('admin/locations/*') || request()->is('admin/app-permissions/*') || request()->is('admin/app-permissions')? 'active' : '' }}">
                         <i class="fa fa-gear nav-icon"></i>
                         <p>App Settings
                             <i class="right fas fa-angle-left"></i>
