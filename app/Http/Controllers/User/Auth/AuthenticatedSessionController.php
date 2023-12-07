@@ -88,8 +88,6 @@ class AuthenticatedSessionController extends Controller
                     $username = User::where('email', $request->email)->value('first_name') . ' ' . User::where('email', $request->email)->value('last_name');
                     if ($checkVerified == 1) {
 
-                        if (hasLicense() == false) {
-
                             $request->authenticate();
                             $request->session()->regenerate();
 
@@ -105,12 +103,7 @@ class AuthenticatedSessionController extends Controller
                                 'text' => "Login Successfully! Welcome " . $username,
                             ]);
                             return redirect()->intended(RouteServiceProvider::HOME);
-                        } else {
-                            Session::flash('license_error', [
-                                'text' => "Invalid Credentials, Please contact backoffice for support.",
-                            ]);
-                            return redirect()->back()->withInput();
-                        }
+                        
                     } else {
                         LogActivity::addToLog($request, 'an unverified account (' . $request->email . ') tried to login in dashboard');
                         Session::flash('error', [
