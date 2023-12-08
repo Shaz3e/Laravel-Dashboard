@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\Admin\Auth\NewUserSignUp;
-use App\Mail\Clients\Auth\VerificationEmail;
+use App\Mail\User\Auth\VerificationEmail;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\Request;

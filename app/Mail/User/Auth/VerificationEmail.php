@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Clients\Auth;
+namespace App\Mail\User\Auth;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,7 +39,7 @@ class VerificationEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.clients.auth.verification-email',
+            markdown: 'emails.user.auth.verification-email',
             with: [
                 'url' => $this->mailData,
             ]
