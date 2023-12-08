@@ -264,7 +264,7 @@
                                                 <option value="">-- Select Country --</option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}"
-                                                        {{ $country->id == $data->country ? 'selected' : '' }}>
+                                                        @selected($country->id == $data->country)>
                                                         {{ $country->name }}
                                                     </option>
                                                 @endforeach
