@@ -33,7 +33,7 @@
     <div class="master">
         <div class="box">
             <div class="header">
-                <img src="{{ asset('logos/fx-logo.png') }}" />
+                <img src="{{ asset('logos/installer-logo.png') }}" />
             </div>
             <ul class="step">
                 <li class="step__divider"></li>
