@@ -91,6 +91,7 @@ class AppSettingsController extends Controller
         $enable_city = AppSettings::where('setting_name', 'enable_city')->value('setting_value');
         $dob_is_active = AppSettings::where('setting_name', 'dob_is_active')->value('setting_value');
         $age_limit = AppSettings::where('setting_name', 'age_limit')->value('setting_value');
+        $user_auto_login = AppSettings::where('setting_name', 'user_auto_login')->value('setting_value');
 
         $dataSet = [
             'site_name' => $site_name,
@@ -101,6 +102,7 @@ class AppSettingsController extends Controller
             'enable_city' => $enable_city,
             'dob_is_active' => $dob_is_active,
             'age_limit' => $age_limit,
+            'user_auto_login' => $user_auto_login,
         ];
         LogActivity::addToLog($request, 'Viewed Basic app settings');
         return view($this->view . 'basic.index', compact('dataSet'));
@@ -201,6 +203,7 @@ class AppSettingsController extends Controller
                     'enable_city' => 'required|boolean',
                     'dob_is_active' => 'required|boolean',
                     'age_limit' => 'required|numeric|gt:-1',
+                    'user_auto_login' => 'required|boolean',
                 ],
                 [
                     'enable_state.required' => 'Something went wrong, pleaes refresh the page and try again.',
@@ -211,6 +214,8 @@ class AppSettingsController extends Controller
                     'age_limit.required' => 'Please enter age limit in numbers.',
                     'age_limit.numeric' => 'Please enter age limit in numbers.',
                     'age_limit.gt' => 'Age limit should be in positive numbers',
+                    'user_auto_login.required' => 'Select Auto login option',
+                    'user_auto_login.boolean' => 'Auto login option is invalid',
                 ],
             );
 
@@ -239,6 +244,11 @@ class AppSettingsController extends Controller
                 AppSettings::updateOrCreate(
                     ['setting_name' => 'age_limit'],
                     ['setting_value' => $request->age_limit]
+                );
+
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'user_auto_login'],
+                    ['setting_value' => $request->user_auto_login]
                 );
 
                 Session::flash('message', [

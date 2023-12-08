@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\IpUtils;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
 {
@@ -106,10 +108,12 @@ class RegisteredUserController extends Controller
                 ]);
                 return redirect()->back()->withInput();
             }
+            
         } else {
             
             $this->registerUser($request);
             return redirect()->route('login');
+
         }
     }
 
@@ -126,10 +130,11 @@ class RegisteredUserController extends Controller
         $user->city = $request->city;
         $user->dob = $request->dob;
         $user->password = Hash::make($password);
+        $user->remember_token = $request->_token;
         $user->save();
 
         $mailData = [
-            'verification_link' => DiligentCreators('dashboard_url') . '/verify-email/' . $request->email . '/' . $request->_token,
+            'verification_link' => config('app.url') . '/verify-email/' . $request->email . '/' . $request->_token,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -137,10 +142,23 @@ class RegisteredUserController extends Controller
         ];
 
         Mail::to($request->email)->send(new VerificationEmail($mailData));
-        Mail::to(DiligentCreators('to_email'))->send(new NewUserSignUp($mailData));
+        Mail::to(config('mail.from.address'))->send(new NewUserSignUp($mailData));
+
+        if(DiligentCreators('user_auto_login') == 1){
+            
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            Session::flash('message', [
+                'text' => 'Please verify your email.',
+            ]);
+
+            return redirect()->intended(RouteServiceProvider::HOME);
+
+        }
 
         Session::flash('message', [
-            'text' => 'Email has been sent',
+            'text' => 'Please verify your email.',
         ]);
     }
 }

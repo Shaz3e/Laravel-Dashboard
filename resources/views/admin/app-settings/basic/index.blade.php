@@ -98,10 +98,10 @@
 
                         <div class="row">
 
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-2 col-md-2 col-sm-12">
                                 <div class="form-group">
-                                    <label for="enable_state">Enable/Disable State</label>
-                                    <select class="form-control select2bs4" name="enable_state">
+                                    <label for="enable_state">State</label>
+                                    <select class="form-control" name="enable_state">
                                         <option value="1"
                                             {{ old('enable_state', $dataSet['enable_state']) == 1 ? 'selected' : '' }}>
                                             Enable</option>
@@ -109,13 +109,14 @@
                                             {{ old('enable_state', $dataSet['enable_state']) == 0 ? 'selected' : '' }}>
                                             Disable</option>
                                     </select>
+                                    <small class="text-muted">Enable/Disable State field on registration form</small>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-2 col-md-2 col-sm-12">
                                 <div class="form-group">
-                                    <label for="enable_city">Enable/Disable City</label>
-                                    <select class="form-control select2bs4" name="enable_city">
+                                    <label for="enable_city">City</label>
+                                    <select class="form-control" name="enable_city">
                                         <option value="1"
                                             {{ old('enable_city', $dataSet['enable_city']) == 1 ? 'selected' : '' }}>Enable
                                         </option>
@@ -123,13 +124,14 @@
                                             {{ old('enable_city', $dataSet['enable_city']) == 0 ? 'selected' : '' }}>
                                             Disable</option>
                                     </select>
+                                    <small class="text-muted">Enable/Disable City field on registration form</small>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-2 col-md-2 col-sm-12">
                                 <div class="form-group">
-                                    <label for="dob_is_active">Enable/Disable Date of Birth</label>
-                                    <select class="form-control select2bs4" name="dob_is_active">
+                                    <label for="dob_is_active">Date of Birth</label>
+                                    <select class="form-control" name="dob_is_active">
                                         <option value="1"
                                             {{ old('dob_is_active', $dataSet['dob_is_active']) == 1 ? 'selected' : '' }}>Enable
                                         </option>
@@ -137,10 +139,11 @@
                                             {{ old('dob_is_active', $dataSet['dob_is_active']) == 0 ? 'selected' : '' }}>
                                             Disable</option>
                                     </select>
+                                    <small class="text-muted">Enable/Disable DOB field on registration form</small>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-1 col-md-1 col-sm-12">
                                 <div class="form-group">
                                     <label for="age_limit">Age Limit</label>
                                     <input type="number" required number="true" name="age_limit" class="form-control"
@@ -148,6 +151,22 @@
                                     <small class="text-muted">To disable age limit insert 0</small>
                                 </div>
                             </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="form-group">
+                                    <label for="user_auto_login">Auto Login</label>
+                                    <select class="form-control" name="user_auto_login">
+                                        <option value="1"
+                                            {{ old('user_auto_login', $dataSet['user_auto_login']) == 1 ? 'selected' : '' }}>Enable
+                                        </option>
+                                        <option value="0"
+                                            {{ old('user_auto_login', $dataSet['user_auto_login']) == 0 ? 'selected' : '' }}>
+                                            Disable</option>
+                                    </select>
+                                    <small class="text-muted">Enable/Disable Auto Login User will be logged in automaticaly after signup</small>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <!-- /.card-body -->

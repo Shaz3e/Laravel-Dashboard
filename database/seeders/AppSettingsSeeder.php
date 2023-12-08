@@ -44,6 +44,9 @@ class AppSettingsSeeder extends Seeder
             ['setting_name' => 'google_recaptcha', 'setting_value' => null, 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'google_site_key', 'setting_value' => null, 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'google_secret_key', 'setting_value' => null, 'created_at' => now(), 'updated_at' => now(),],
+            
+            // User Login
+            ['setting_name' => 'user_auto_login', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
 
             // State and City
             ['setting_name' => 'enable_state', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
