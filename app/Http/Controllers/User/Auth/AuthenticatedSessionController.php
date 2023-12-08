@@ -51,6 +51,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Validate reCAPTCHA
+        if (!validateRecaptcha($request->input('g-recaptcha-response'))) {
+            return redirect()->back()->withInput();
+        }
+        
         $validator = Validator::make(
             $request->all(),
             [

@@ -226,55 +226,105 @@
         });
     </script>
     {{-- Theme Setting --}}
-    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
-    @if (Session::has('license_error'))
-    <script>
-        // do not auto format code
-        toastr.options = {
-            "closeButton": {{ DiligentCreators('toastr_notification_close_button') }},
-            "positionClass": "toast-{{ DiligentCreators('toastr_notification_position_class') }}",
-            "newestOnTop": true,
-            "timeOut": "infinite",
-            "progressBar": {{ DiligentCreators('toastr_notification_progress_bar') }},
-        }
-    </script>  
-    @else
-    <script>
-        // do not auto format code
-        toastr.options = {
-            "closeButton": {{ DiligentCreators('toastr_notification_close_button') }},
-            "positionClass": "toast-{{ DiligentCreators('toastr_notification_position_class') }}",
-            "newestOnTop": true,
-            "timeOut": "{{ DiligentCreators('toastr_notification_time_out') }}",
-            "progressBar": {{ DiligentCreators('toastr_notification_progress_bar') }},
-        }
-    </script>
+    @if(DiligentCreators('notification_type') == 'toastr')
+        <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+        <script>
+            // do not auto format code
+            toastr.options = {
+                "closeButton": {{ DiligentCreators('toastr_notification_close_button') }},
+                "positionClass": "toast-{{ DiligentCreators('toastr_notification_position_class') }}",
+                "newestOnTop": true,
+                "timeOut": "{{ DiligentCreators('toastr_notification_time_out') }}",
+                "progressBar": {{ DiligentCreators('toastr_notification_progress_bar') }},
+            }
+        </script>
+        @if (Session::has('message'))
+            <script>
+                toastr.success("{{ session('message')['text'] }}");
+            </script>
+        @endif
+        @if (Session::has('error'))
+            <script>
+                toastr.error("{{ session('error')['text'] }}");
+            </script>
+        @endif
+        @if (Session::has('info'))
+            <script>
+                toastr.info("{{ session('info')['text'] }}");
+            </script>
+        @endif
+        @if (Session::has('warning'))
+            <script>
+                toastr.warning("{{ session('warning')['text'] }}");
+            </script>
+        @endif
     @endif
+    {{-- endif notification type == toastr --}}
 
-    @if (Session::has('message'))
+    @if(DiligentCreators('notification_type') == 'sweetalerts')
+        <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
         <script>
-            toastr.success("{{ session('message')['text'] }}");
+            // do not auto format code
+            const Toast = Swal.mixin({
+                toast: {{ DiligentCreators('sweet_alerts_type') }},
+                position: "{{ DiligentCreators('sweet_alerts_position') }}",
+                timer: {{ DiligentCreators('sweet_alerts_timer') }},
+                timerProgressBar: {{ DiligentCreators('sweet_alerts_timer_progress_bar') }},
+                animation: {{ DiligentCreators('sweet_alerts_animation') }},
+                iconColor: "{{ DiligentCreators('sweet_alerts_icon_color') }}",
+                color: "{{ DiligentCreators('sweet_alerts_text_color') }}",
+                background: "{{ DiligentCreators('sweet_alerts_background_color') }}",
+                customClass: {
+                    confirmButton: "btn btn-{{ DiligentCreators('sweet_alerts_confirm_button') }}",
+                    cancelButton: "btn btn-{{ DiligentCreators('sweet_alerts_cancel_button') }}",
+                    popup: "sweetalert-custom-popup-class",
+                },
+                buttonsStyling: false,
+                showConfirmButton: {{ DiligentCreators('sweet_alerts_show_confirm_button') }},
+            });
+            // Add your custom CSS styles
+            const customStyles = document.createElement('style');
+            customStyles.innerHTML = `
+                .sweetalert-custom-popup-class {
+                    color: {{ DiligentCreators('sweet_alerts_text_color') }};
+                }
+            `;
+
+            // Append the custom styles to the document head
+            document.head.appendChild(customStyles);
         </script>
-    @endif
-    @if (Session::has('error'))
-        <script>
-            toastr.error("{{ session('error')['text'] }}");
-        </script>
-    @endif
-    @if (Session::has('license_error'))
-        <script>
-            toastr.error("{!! session('license_error')['text'] !!}");
-        </script>
-    @endif
-    @if (Session::has('info'))
-        <script>
-            toastr.info("{{ session('info')['text'] }}");
-        </script>
-    @endif
-    @if (Session::has('warning'))
-        <script>
-            toastr.warning("{{ session('warning')['text'] }}");
-        </script>
+        @if (Session::has('message'))
+            <script>
+                Toast.fire({
+                    icon: 'success',
+                    text: "{{ session('message')['text'] }}",
+                })
+            </script>
+        @endif
+        @if (Session::has('error'))
+            <script>
+                Toast.fire({
+                    icon: 'error',
+                    text: "{{ session('error')['text'] }}",
+                })
+            </script>
+        @endif
+        @if (Session::has('info'))
+            <script>
+                Toast.fire({
+                    icon: 'info',
+                    text: "{{ session('info')['text'] }}",
+                })
+            </script>
+        @endif
+        @if (Session::has('warning'))
+            <script>
+                Toast.fire({
+                    icon: 'warning',
+                    text: "{{ session('warning')['text'] }}",
+                })
+            </script>
+        @endif
     @endif
 
     @if (DiligentCreators('google_recaptcha') == 1)

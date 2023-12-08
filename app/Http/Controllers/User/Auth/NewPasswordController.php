@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\User\Auth\ResetPasswordSuccess;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -42,6 +44,10 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate reCAPTCHA
+        if(!validateRecaptcha($request->input('g-recaptcha-response'))){
+            return back();
+        }
         $validator = Validator::make(
             $request->all(),
             [
@@ -72,6 +78,16 @@ class NewPasswordController extends Controller
                 'remember_token' => Str::random(60),
             ]);
             if ($data) {
+                $user = User::where('email', $request->email)->first();
+
+                $mailData = [
+                    'name' => $user->first_name.' '.$user->last_name,
+                    'password' => $request->password,
+                    'email' => $user->email,
+                ];
+
+                Mail::to($user->email)->send(new ResetPasswordSuccess($mailData));
+
                 Session::flash('message', [
                     'text' => 'Your password updated successfully',
                 ]);

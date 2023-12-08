@@ -21,6 +21,11 @@
                 <p class="login-box-msg p-0 m-0">Forgot Password</p>
             </div>
             <div class="card-body">
+                @if (Session::has('message'))
+                    <div class="alert alert-success">
+                        {{ session('message')['text'] }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('password.email') }}" id="submitForm">
                     @csrf
                     <div class="input-group mb-3">

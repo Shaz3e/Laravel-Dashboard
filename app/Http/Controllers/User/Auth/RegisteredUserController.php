@@ -9,7 +9,6 @@ use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +16,7 @@ use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\IpUtils;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -42,6 +42,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate reCAPTCHA
+        if (!validateRecaptcha($request->input('g-recaptcha-response'))) {
+            return back();
+        }
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -74,47 +79,8 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        if (DiligentCreators('google_recaptcha') == 1) {
-            $recaptcha_response = $request->input('g-recaptcha-response');
-
-            if (is_null($recaptcha_response)) {
-                Session::flash('error', [
-                    'text' => 'Please Complete the Recaptcha to proceed'
-                ]);
-                return redirect()->back()->withInput();
-            }
-
-            $url = "https://www.google.com/recaptcha/api/siteverify";
-
-            $body = [
-                'secret' => DiligentCreators('google_secret_key'),
-                'response' => $recaptcha_response,
-                'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
-            ];
-
-            $response = Http::withoutVerifying()->asForm()->post($url, $body);
-
-            $result = json_decode($response);
-
-            if ($response->successful() && $result->success == true) {
-
-                $this->registerUser($request);
-                
-                return redirect()->route('login');
-            } else {
-                
-                Session::flash('error', [
-                    'text' => 'Please Complete the Recaptcha Again to proceed'
-                ]);
-                return redirect()->back()->withInput();
-            }
-            
-        } else {
-            
-            $this->registerUser($request);
-            return redirect()->route('login');
-
-        }
+        $this->registerUser($request);
+        return redirect()->route('login');
     }
 
     public function registerUser(Request $request)
@@ -130,7 +96,7 @@ class RegisteredUserController extends Controller
         $user->city = $request->city;
         $user->dob = $request->dob;
         $user->password = Hash::make($password);
-        $user->remember_token = $request->_token;
+        $user->remember_token = Str::random(60);
         $user->save();
 
         $mailData = [
@@ -141,8 +107,8 @@ class RegisteredUserController extends Controller
             'password' => $password,
         ];
 
-        Mail::to($request->email)->send(new VerificationEmail($mailData));
-        Mail::to(config('mail.from.address'))->send(new NewUserSignUp($mailData));
+        // Mail::to($request->email)->send(new VerificationEmail($mailData));
+        // Mail::to(config('mail.from.address'))->send(new NewUserSignUp($mailData));
 
         if(DiligentCreators('user_auto_login') == 1){
             
@@ -154,7 +120,6 @@ class RegisteredUserController extends Controller
             ]);
 
             return redirect()->intended(RouteServiceProvider::HOME);
-
         }
 
         Session::flash('message', [

@@ -429,7 +429,7 @@
             <script>
                 Toast.fire({
                     icon: 'error',
-                    text: "{{ session('message')['text'] }}",
+                    text: "{{ session('error')['text'] }}",
                 })
             </script>
         @endif
@@ -437,7 +437,7 @@
             <script>
                 Toast.fire({
                     icon: 'info',
-                    text: "{{ session('message')['text'] }}",
+                    text: "{{ session('info')['text'] }}",
                 })
             </script>
         @endif
@@ -445,7 +445,7 @@
             <script>
                 Toast.fire({
                     icon: 'warning',
-                    text: "{{ session('message')['text'] }}",
+                    text: "{{ session('warning')['text'] }}",
                 })
             </script>
         @endif

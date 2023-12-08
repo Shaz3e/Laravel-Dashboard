@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +18,8 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpFoundation\IpUtils;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Get PHP Time Zone
@@ -430,4 +434,48 @@ function hasAccess($access)
         // return redirect()->route('admin.dashboard');
 		abort(403);
     }
+}
+
+/**
+ * Google reCaptcha
+ */
+function validateRecaptcha($recaptchaResponse)
+{
+	if (DiligentCreators('google_recaptcha') != 1) {
+        // Recaptcha is not enabled, so validation passes
+        return true;
+    }
+	if (is_null($recaptchaResponse)) {
+		Session::flash('error', [
+			'text' => 'Please Complete the Recaptcha to proceed'
+		]);
+
+		return false;
+	}
+
+	$url = "https://www.google.com/recaptcha/api/siteverify";
+
+	$body = [
+		'secret' => DiligentCreators('google_secret_key'),
+		'response' => $recaptchaResponse,
+		'remoteip' => IpUtils::anonymize(request()->ip())
+	];
+
+	if (config('app.env') != 'production') {
+		$response = Http::withoutVerifying()->asForm()->post($url, $body);
+	} else {
+		$response = Http::asForm()->post($url, $body);
+	}
+
+	$result = json_decode($response);
+
+	if ($response->successful() && $result->success == true) {
+        return true;
+    }
+
+	Session::flash('error', [
+		'text' => 'Please Complete the Recaptcha Again to proceed'
+	]);
+
+	return false;
 }
