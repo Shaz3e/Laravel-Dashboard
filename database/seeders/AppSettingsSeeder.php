@@ -48,7 +48,9 @@ class AppSettingsSeeder extends Seeder
             // User Login
             ['setting_name' => 'user_auto_login', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
 
-            // State and City
+            // Country State and City
+            ['setting_name' => 'enable_mobile', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
+            ['setting_name' => 'enable_country', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'enable_state', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
             ['setting_name' => 'enable_city', 'setting_value' => 0, 'created_at' => now(), 'updated_at' => now(),],
 

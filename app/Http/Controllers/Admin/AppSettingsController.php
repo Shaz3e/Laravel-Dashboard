@@ -87,9 +87,11 @@ class AppSettingsController extends Controller
         $site_url = AppSettings::where('setting_name', 'site_url')->value('setting_value');
         $dashboard_url = AppSettings::where('setting_name', 'dashboard_url')->value('setting_value');
         $site_timezone = AppSettings::where('setting_name', 'site_timezone')->value('setting_value');
+        $enable_country = AppSettings::where('setting_name', 'enable_country')->value('setting_value');
         $enable_state = AppSettings::where('setting_name', 'enable_state')->value('setting_value');
         $enable_city = AppSettings::where('setting_name', 'enable_city')->value('setting_value');
         $dob_is_active = AppSettings::where('setting_name', 'dob_is_active')->value('setting_value');
+        $enable_mobile = AppSettings::where('setting_name', 'enable_mobile')->value('setting_value');
         $age_limit = AppSettings::where('setting_name', 'age_limit')->value('setting_value');
         $user_auto_login = AppSettings::where('setting_name', 'user_auto_login')->value('setting_value');
 
@@ -98,9 +100,11 @@ class AppSettingsController extends Controller
             'site_url' => $site_url,
             'dashboard_url' => $dashboard_url,
             'site_timezone' => $site_timezone,
+            'enable_country' => $enable_country,
             'enable_state' => $enable_state,
             'enable_city' => $enable_city,
             'dob_is_active' => $dob_is_active,
+            'enable_mobile' => $enable_mobile,
             'age_limit' => $age_limit,
             'user_auto_login' => $user_auto_login,
         ];
@@ -199,13 +203,17 @@ class AppSettingsController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
+                    'enable_country' => 'required|boolean',
                     'enable_state' => 'required|boolean',
                     'enable_city' => 'required|boolean',
                     'dob_is_active' => 'required|boolean',
                     'age_limit' => 'required|numeric|gt:-1',
+                    'enable_mobile' => 'required|numeric',
                     'user_auto_login' => 'required|boolean',
                 ],
                 [
+                    'enable_country.required' => 'Something went wrong, pleaes refresh the page and try again.',
+                    'enable_country.boolean' => 'Country should be enable or disable, please refresh the page and try again',
                     'enable_state.required' => 'Something went wrong, pleaes refresh the page and try again.',
                     'enable_state.boolean' => 'State should be enable or disable, please refresh the page and try again',
                     'enable_city.required' => 'Something went wrong, pleaes refresh the page and try again.',
@@ -214,6 +222,8 @@ class AppSettingsController extends Controller
                     'age_limit.required' => 'Please enter age limit in numbers.',
                     'age_limit.numeric' => 'Please enter age limit in numbers.',
                     'age_limit.gt' => 'Age limit should be in positive numbers',
+                    'enable_mobile.required' => 'Please enter mobile number.',
+                    'enable_mobile.numeric' => 'Please enter enter valid mobile number.',
                     'user_auto_login.required' => 'Select Auto login option',
                     'user_auto_login.boolean' => 'Auto login option is invalid',
                 ],
@@ -226,6 +236,10 @@ class AppSettingsController extends Controller
                 return redirect()->back()->withInput();
             } else {
                 // Update or create the CRM Settings
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'enable_country'],
+                    ['setting_value' => $request->enable_country]
+                );
                 AppSettings::updateOrCreate(
                     ['setting_name' => 'enable_state'],
                     ['setting_value' => $request->enable_state]
@@ -241,6 +255,10 @@ class AppSettingsController extends Controller
                     ['setting_value' => $request->dob_is_active]
                 );
 
+                AppSettings::updateOrCreate(
+                    ['setting_name' => 'enable_mobile'],
+                    ['setting_value' => $request->enable_mobile]
+                );
                 AppSettings::updateOrCreate(
                     ['setting_name' => 'age_limit'],
                     ['setting_value' => $request->age_limit]

@@ -3,6 +3,7 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
 @endsection
 
 @section('content')
@@ -98,7 +99,22 @@
 
                         <div class="row">
 
-                            <div class="col-lg-2 col-md-2 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="enable_country">Country</label>
+                                    <select class="form-control" name="enable_country">
+                                        <option value="1"
+                                            {{ old('enable_country', $dataSet['enable_country']) == 1 ? 'selected' : '' }}>
+                                            Enable</option>
+                                        <option value="0"
+                                            {{ old('enable_country', $dataSet['enable_country']) == 0 ? 'selected' : '' }}>
+                                            Disable</option>
+                                    </select>
+                                    <small class="text-muted">Enable/Disable Country field on registration form</small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="enable_state">State</label>
                                     <select class="form-control" name="enable_state">
@@ -113,7 +129,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2 col-md-2 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="enable_city">City</label>
                                     <select class="form-control" name="enable_city">
@@ -128,7 +144,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2 col-md-2 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="dob_is_active">Date of Birth</label>
                                     <select class="form-control" name="dob_is_active">
@@ -143,7 +159,22 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-1 col-md-1 col-sm-12">
+                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                <div class="form-group">
+                                    <label for="enable_mobile">Mobile No.</label>
+                                    <select class="form-control" name="enable_mobile">
+                                        <option value="1"
+                                            {{ old('enable_mobile', $dataSet['enable_mobile']) == 1 ? 'selected' : '' }}>Enable
+                                        </option>
+                                        <option value="0"
+                                            {{ old('enable_mobile', $dataSet['enable_mobile']) == 0 ? 'selected' : '' }}>
+                                            Disable</option>
+                                    </select>
+                                    <small class="text-muted">Enable/Disable Mobile No field on registration form</small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12">
                                 <div class="form-group">
                                     <label for="age_limit">Age Limit</label>
                                     <input type="number" required number="true" name="age_limit" class="form-control"
@@ -152,7 +183,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2 col-md-2 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
                                     <label for="user_auto_login">Auto Login</label>
                                     <select class="form-control" name="user_auto_login">
@@ -185,6 +216,7 @@
 
 @section('scripts')
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script>

@@ -67,6 +67,29 @@
                     </div>
                     <div class="form-group mb-3">
                         <div class="input-group">
+                            <input type="password" class="form-control" name="password"
+                                placeholder="Password" id="password" required />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fa-solid fa-key"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="confirm_password"
+                                placeholder="Confirm Password" id="confirm_password" required />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fa-solid fa-key"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (DiligentCreators('enable_country') == 1)
+                    <div class="form-group mb-3">
+                        <div class="input-group">
                             <select name="country" class="form-control select2b4" id="country" required>
                                 <option value="">Country</option>
                                 @foreach ($countries as $country)
@@ -82,6 +105,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @if (DiligentCreators('enable_state') == 1)
                         <div class="form-group mb-3">
                             <div class="input-group">
@@ -96,7 +120,7 @@
                             </div>
                         </div>
                     @endif
-                    @if (DiligentCreators('enable_city') == 1)
+                    @if (DiligentCreators('enable_state') == 1 && DiligentCreators('enable_city') == 1)
                         <div class="form-group mb-3">
                             <div class="input-group">
                                 <select name="city" class="form-control select2b4" id="city" required>
@@ -110,6 +134,7 @@
                             </div>
                         </div>
                     @endif
+                    @if(DiligentCreators('enable_mobile') == 1)
                     <div class="form-group mb-3">
                         <div class="input-group">
                             <input type="text" class="form-control" name="mobile" id="mobile"
@@ -121,6 +146,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @if (DiligentCreators('dob_is_active') == 1)
                         <div class="form-group mb-3">
                             <div class="input-group mb-3 date" id="dob" data-target-input="nearest">
@@ -184,6 +210,7 @@
         });
 
 
+        @if(DiligentCreators('enable_country'))
         // On Country Change Actions
         $('#country').on('change', function() {
             let country = this.value;
@@ -225,7 +252,9 @@
                 $('input[name="mobile"]').val(''); // Clear mobile input if no country selected
             }
         });
+        @endif
 
+        @if(DiligentCreators('enable_state'))
         // On State Change Actions
         $('#state').on('change', function() {
             let state = this.value;
@@ -248,12 +277,35 @@
                 $('#city').html('<option value="">Select City</option>');
             }
         });
+        @endif
 
         $.validator.addMethod("noSpace", function(value, element) {
             return /^[a-zA-Z0-9_.-]+$/.test(value);
         }, "No space please and don't leave it empty");
 
         $('#submitForm').validate({
+            // rules: {
+            //     password: {
+            //         required: true,
+            //         minlength: 8,
+            //         maxlength: 32,
+            //     },
+            //     confirm_password: {
+            //         required: true,
+            //         equalTo: '#password',
+            //     }
+            // },
+            // messages: {
+            //     password: {
+            //         required: 'Please enter a password',
+            //         minlength: 'Password must be at least {0} characters long',
+            //         maxlength: 'Password must be at most {0} characters long'
+            //     },
+            //     confirm_password: {
+            //         required: 'Please enter the same password again',
+            //         equalTo: 'Passwords do not match',
+            //     }
+            // },
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');

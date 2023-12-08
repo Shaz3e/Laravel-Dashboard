@@ -53,8 +53,8 @@ class RegisteredUserController extends Controller
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'email' => 'required|email|unique:users,email|max:255',
-                'country' => 'required',
-                'mobile' => 'required|unique:users,mobile',
+                'password' => 'required|min:8|max:32',
+                'confirm_password' => 'required|same:password',
                 'terms' => 'required',
             ],
             [
@@ -66,10 +66,12 @@ class RegisteredUserController extends Controller
                 'email.email' => 'The email is not valid',
                 'email.unique' => 'The email is already registered',
                 'email.max' => 'The email is too long',
-                'country.required' => 'The country is required',
-                'mobile.required' => 'The mobile is required',
-                'mobile.unique' => 'The mobile is already registered',
-                'mobile.max' => 'The mobile is too long',
+
+                'password.required' => 'Please enter a password.',
+                'password.min' => 'Password must be at least :min characters long.',
+                'password.max' => 'Password must be at least :max characters long.',
+                'confirm_password.required' => 'Please confirm your password.',
+                'confirm_password.same' => 'Passwords do not match.',
             ]
         );
 
@@ -77,6 +79,8 @@ class RegisteredUserController extends Controller
             Session::flash('error', [
                 'text' => $validator->errors()->first(),
             ]);
+
+            return redirect()->back()->withInput();
         }
 
         $this->registerUser($request);
@@ -85,7 +89,6 @@ class RegisteredUserController extends Controller
 
     public function registerUser(Request $request)
     {
-        $password = GeneratePassword();
         $user = new User();
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -95,7 +98,7 @@ class RegisteredUserController extends Controller
         $user->state = $request->state;
         $user->city = $request->city;
         $user->dob = $request->dob;
-        $user->password = Hash::make($password);
+        $user->password = $request->password;
         $user->remember_token = Str::random(60);
         $user->save();
 
@@ -104,11 +107,11 @@ class RegisteredUserController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => $password,
+            'password' => $request->password,
         ];
 
-        // Mail::to($request->email)->send(new VerificationEmail($mailData));
-        // Mail::to(config('mail.from.address'))->send(new NewUserSignUp($mailData));
+        Mail::to($request->email)->send(new VerificationEmail($mailData));
+        Mail::to(config('mail.from.address'))->send(new NewUserSignUp($mailData));
 
         if(DiligentCreators('user_auto_login') == 1){
             
