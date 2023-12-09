@@ -6,6 +6,7 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AdminLoginRequest;
 use App\Models\Admin;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,7 +86,8 @@ class AuthenticatedSessionController extends Controller
                         Session::flash('message', [
                             'text' => "Login Successfully! Welcome " . $name,
                         ]);
-                        return redirect('/admin');
+                        return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
+                        // return redirect('/admin');
                     }
                 } else {
                     /** 
