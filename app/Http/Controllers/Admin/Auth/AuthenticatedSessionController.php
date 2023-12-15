@@ -86,8 +86,8 @@ class AuthenticatedSessionController extends Controller
                         Session::flash('message', [
                             'text' => "Login Successfully! Welcome " . $name,
                         ]);
-                        return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
-                        // return redirect('/admin');
+                        // return redirect()->intended();
+                        return redirect('/admin');
                     }
                 } else {
                     /** 
