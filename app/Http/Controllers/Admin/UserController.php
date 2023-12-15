@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -23,9 +22,27 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dataSet = User::all();
+        // Search Client by Name, Email, Mobile 
+        if ($request->search != null) {
+            $search = $request->search;
+
+            $query = User::where(function ($query) use ($search) {
+                $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('mobile', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+
+            LogActivity::addToLog($request,'Searched for "'.$search.'"');
+            $dataSet = $query->paginate(10);
+            $dataSet->appends(['search' => $search]);
+        } else {
+            LogActivity::addToLog($request, 'viewed all clients');
+            $dataSet = User::paginate(10);
+        }
+
         return view($this->view . 'index', compact('dataSet'));
     }
 
@@ -125,7 +142,7 @@ class UserController extends Controller
         $data = User::find($id);
 
         if ($request->status != null) {
-            User::where('id',$request->id)->update([
+            User::where('id', $request->id)->update([
                 'is_verified' => $request->status,
                 'email_verified_at' => now(),
             ]);
@@ -182,7 +199,7 @@ class UserController extends Controller
                     'username.required' => 'Username is required',
                     'username.max' => 'Username must be less then 255 characters',
                     'username.unique' => 'This username has already been taken',
-                    
+
                     // First Name
                     'first_name.required' => 'First Name is required',
                     'first_name.regax' => 'First Name consist only on alphabet',

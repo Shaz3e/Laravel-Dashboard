@@ -33,7 +33,19 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">View all clients</h3>
+                    <div class="card-title">
+                        {{-- Search Client --}}
+                        <form action="{{ route('admin.clients.index') }}" method="GET">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control float-right" placeholder="Search" value="{{ old('search') }}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i
+                                            class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="card-tools">
                         <a href="{{ route('admin.clients.create') }}" class="btn btn-flat btn-sm btn-theme"><i
                                 class="fa-regular fa-square-plus"></i> Create New</a>
@@ -92,6 +104,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{-- Bootstrap Links --}}
+                        <div class="dataTables_paginate">
+                            {{ $dataSet->links('pagination::bootstrap-5') }}
+                        </div>
                     </div>
 
                 </div>
@@ -106,44 +122,7 @@
 @endsection
 
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script>
-        $(function() {
-            $("#dataList").DataTable({
-                "order": [
-                    [0, "desc"]
-                ],
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "pageLength": 10,
-                "lengthChange": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#dataList_wrapper .col-md-6:eq(0)');
-        });
-
-        // function DeleteFormSubmit(element) {
-        //     if (confirm("Are you sure you want to delete this client?")) {
-        // Change the button type to "submit" to trigger the form submission
-        // $(element).attr("type", "submit");
-        // Trigger the click event on the button to initiate the form submission
-        //     $(element).click();
-        // }
-        // $(element).attr("type", "submit");
-        // $(element).click();
-        // }
         function DeleteFormSubmit(element) {
             toastr["warning"](
                 '<button type="button" id="yes-btn" class="btn btn-flat btn-sm btn-success mr-1">Yes</button> ' +
