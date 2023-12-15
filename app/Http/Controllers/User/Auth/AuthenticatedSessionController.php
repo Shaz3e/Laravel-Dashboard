@@ -103,7 +103,7 @@ class AuthenticatedSessionController extends Controller
                             LoginHistory::addToLoginHistory($request, auth()->user()->id);
 
                             $username = User::where('email', $request->email)->value('first_name') . ' ' . User::where('email', $request->email)->value('last_name');
-                            LogActivity::addToLog($request, $request->email . ' logged into dashboard');
+                            LogActivity::addToLog($request, 'logged into dashboard');
                             Session::flash('message', [
                                 'text' => "Login Successfully! Welcome " . $username,
                             ]);
