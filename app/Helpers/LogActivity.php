@@ -15,24 +15,20 @@ class LogActivity
         $regularUser = Auth::user();
 
         $log = [];
-        if ($adminUser && $adminUser->id !== 1) {
-            $log['subject'] = $adminUser->name.' ('.$adminUser->email.') '.$subject;
+        if ($adminUser) {
+            $log['admin_id'] = $adminUser->id;
+            $log['subject'] = $adminUser->name . ' ' . $adminUser->email . ' ' . $subject;
+        }elseif ($regularUser) {
+            $log['user_id'] = $regularUser->id;
+            $log['subject'] = $regularUser->first_name . ' ' . $regularUser->last_name . ' ' . $regularUser->email . ' ' . $subject;
         }else{
-            $log['subject'] = $regularUser ? $regularUser->first_name.' '.$regularUser->last_name.' ('.$regularUser->email.') ' : null.' '.$subject;
+            $log['subject'] = $subject;
         }
         $log['url'] = $request->fullUrl();
         $log['method'] = $request->method();
         $log['ip'] = $request->ip();
         $log['agent'] = $request->header('user-agent');
 
-
-        if ($adminUser && $adminUser->id !== 1) {
-            $log['admin_id'] = $adminUser->id;
-        } else {
-            $log['admin_id'] = null;
-            $log['user_id'] = $regularUser ? $regularUser->id : null;
-        }
-        
         ModelsLogActivity::create($log);
     }
 
