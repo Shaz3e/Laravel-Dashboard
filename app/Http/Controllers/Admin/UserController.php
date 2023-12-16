@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // Permission name prefix
+    protected $permission = 'clients.';
+
     // View & Route
     protected $view = "admin.clients.";
     protected $route = "admin/clients";
@@ -24,6 +27,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        authorize($this->permission . 'list');
+
         // Search Client by Name, Email, Mobile 
         if ($request->search != null) {
             $search = $request->search;
@@ -35,7 +40,7 @@ class UserController extends Controller
                     ->orWhere('email', 'like', '%' . $search . '%');
             });
 
-            LogActivity::addToLog($request,'Searched for "'.$search.'"');
+            LogActivity::addToLog($request, 'Searched for "' . $search . '"');
             $dataSet = $query->paginate(10);
             $dataSet->appends(['search' => $search]);
         } else {
@@ -51,6 +56,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        authorize($this->permission . 'create');
         $countries = Country::all();
         return view($this->view . 'create', compact('countries'));
     }
@@ -60,6 +66,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        authorize($this->permission . 'create');
         $validator = Validator::make(
             $request->all(),
             [
@@ -124,6 +131,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        authorize($this->permission . 'show');
         $data = User::find($id);
         if (!$data) {
             return redirect($this->route)->with('error', [
@@ -139,6 +147,8 @@ class UserController extends Controller
      */
     public function edit(Request $request, string $id)
     {
+        authorize($this->permission . 'update');
+
         $data = User::find($id);
 
         if ($request->status != null) {
@@ -178,6 +188,8 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        authorize($this->permission . 'update');
+
         $data = User::find($id);
 
         if ($request->has('profile')) {
@@ -354,6 +366,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        authorize($this->permission . 'delete');
+
         $data = User::find($id);
         if (!$data) {
             return redirect($this->route)->with('error', [

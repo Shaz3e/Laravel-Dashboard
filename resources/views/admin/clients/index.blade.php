@@ -37,7 +37,8 @@
                         {{-- Search Client --}}
                         <form action="{{ route('admin.clients.index') }}" method="GET">
                             <div class="input-group">
-                                <input type="text" name="search" class="form-control float-right" placeholder="Search" value="{{ old('search') }}">
+                                <input type="text" name="search" class="form-control float-right" placeholder="Search"
+                                    value="{{ old('search') }}">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-default"><i
                                             class="fa-solid fa-magnifying-glass"></i>
@@ -47,8 +48,10 @@
                         </form>
                     </div>
                     <div class="card-tools">
-                        <a href="{{ route('admin.clients.create') }}" class="btn btn-flat btn-sm btn-theme"><i
-                                class="fa-regular fa-square-plus"></i> Create New</a>
+                        @can('clients.create')
+                            <a href="{{ route('admin.clients.create') }}" class="btn btn-flat btn-sm btn-theme"><i
+                                    class="fa-regular fa-square-plus"></i> Create New</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -62,7 +65,10 @@
                                     <th>Mobile</th>
                                     <th>Country</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    @if (auth()->user()->can('clients.update') ||
+                                            auth()->user()->can('clients.delete'))
+                                        <th>Actions</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,22 +90,29 @@
                                                 <span class="badge badge-danger">Not Verified</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            {{-- Edit Request --}}
-                                            <a class="btn btn-flat btn-primary"
-                                                href="{{ route('admin.clients.edit', $data->id) }}" title="Edit">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                            </a>
-                                            <form action="{{ route('admin.clients.destroy', $data->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="DeleteFormSubmit(this)"
-                                                    class="btn btn-flat btn-danger">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+                                        @if (auth()->user()->can('clients.update') ||
+                                                auth()->user()->can('clients.delete'))
+                                            <td>
+                                                @can('clients.update')
+                                                    {{-- Edit Request --}}
+                                                    <a class="btn btn-flat btn-primary"
+                                                        href="{{ route('admin.clients.edit', $data->id) }}" title="Edit">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('clients.delete')
+                                                    <form action="{{ route('admin.clients.destroy', $data->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" onclick="DeleteFormSubmit(this)"
+                                                            class="btn btn-flat btn-danger">
+                                                            <i class="fa-solid fa-trash-can"></i>
+                                                        </button>
+                                                    </form>
+                                                @endcan
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
