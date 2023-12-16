@@ -91,13 +91,17 @@ class AdminController extends Controller
             $data->password = Hash::make($request->password);
             $data->email = $request->email;
             $data->is_active = $request->is_active;
-
-            $role = Role::find($request->role_id);
-            $data->assignRole($role);
-
+            
             $result = $data->save();
-
+            
             if ($result) {
+                
+                $role = Role::findById($request->role_id, 'admin');
+
+                if($role){
+                    $data->assignRole($role->name);
+                }
+
                 Session::flash('message', [
                     'text' => 'New staff member has been added',
                 ]);
@@ -211,7 +215,7 @@ class AdminController extends Controller
             $data->email = $request->email;
             $data->is_active = $request->is_active;
 
-            $role = Role::find($request->role_id);
+            $role = Role::findById($request->role_id, 'admin');
             $data->roles()->detach();
             $data->assignRole($role);
 
