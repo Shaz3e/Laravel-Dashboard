@@ -2,9 +2,6 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endsection
 
 @section('content')
@@ -85,30 +82,141 @@
                             <table id="dataList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%" class="text-center">
-                                            <div class="icheck-success d-inline">
-                                                <input type="checkbox" id="selectAll">
-                                                <label for="selectAll"></label>
-                                            </div>
-                                        </th>
-                                        <th>Permission Name</th>
-                                        <th style="width: 10%" class="text-center">Authentication</th>
+                                        <th>Access Area</th>
+                                        <th class="text-center">Select All</th>
+                                        <th class="text-center">Show</th>
+                                        <th class="text-center">Create</th>
+                                        <th class="text-center">Read</th>
+                                        <th class="text-center">Update</th>
+                                        <th class="text-center">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($permissions as $permission)
+                                    @php
+                                        $groupedPermissions = collect($permissions)->groupBy(function ($item) {
+                                            return strtolower(substr($item->name, 0, strpos($item->name, '.')));
+                                        });
+                                    @endphp
+                                    @foreach ($groupedPermissions as $accessArea => $areaPermissions)
                                         <tr>
+                                            <td>{{ ucwords($accessArea) }}</td>
                                             <td class="text-center">
                                                 <div class="icheck-success d-inline">
-                                                    <input type="checkbox"
-                                                        id="permissionCheckBox-{{ $data->id }}-{{ $permission->name }}"
-                                                        @if ($data->permissions->contains('name', $permission->name)) checked @endif>
-                                                    <label
-                                                        for="permissionCheckBox-{{ $data->id }}-{{ $permission->name }}"></label>
+                                                    <input type="checkbox" class="selectAllRow"
+                                                        data-area="{{ $accessArea }}" id="selectAll-{{ $accessArea }}">
+                                                    <label for="selectAll-{{ $accessArea }}"></label>
                                                 </div>
                                             </td>
-                                            <td>{{ $permission->name }}</td>
-                                            <td class="text-center">{{ ucwords($permission->guard_name) }}</td>
+                                            <td class="text-center">
+                                                @php
+                                                    $showPermissionExists = $areaPermissions->contains(function ($permission) {
+                                                        return str_contains($permission->name, 'show');
+                                                    });
+                                                @endphp
+                                                @if ($showPermissionExists)
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" class="select-permission"
+                                                            name="permissions[]" value="{{ $accessArea }}.show"
+                                                            data-permission-name="{{ $accessArea }}.show"
+                                                            data-permission="show" data-area="{{ $accessArea }}"
+                                                            id="showPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
+                                                            @if (
+                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
+                                                                    return str_contains($permission->name, 'show') && str_contains($permission->name, $accessArea);
+                                                                })) checked @endif>
+                                                        <label
+                                                            for="showPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @php
+                                                    $createPermissionExists = $areaPermissions->contains(function ($permission) {
+                                                        return str_contains($permission->name, 'create');
+                                                    });
+                                                @endphp
+                                                @if ($createPermissionExists)
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" class="select-permission"
+                                                            name="permissions[]" value="{{ $accessArea }}.create"
+                                                            data-permission-name="{{ $accessArea }}.create"
+                                                            data-permission="create" data-area="{{ $accessArea }}"
+                                                            id="createPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
+                                                            @if (
+                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
+                                                                    return str_contains($permission->name, 'create') && str_contains($permission->name, $accessArea);
+                                                                })) checked @endif>
+                                                        <label
+                                                            for="createPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @php
+                                                    $readPermissionExists = $areaPermissions->contains(function ($permission) {
+                                                        return str_contains($permission->name, 'read');
+                                                    });
+                                                @endphp
+                                                @if ($readPermissionExists)
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" class="select-permission"
+                                                            name="permissions[]" value="{{ $accessArea }}.read"
+                                                            data-permission-name="{{ $accessArea }}.read"
+                                                            data-permission="read" data-area="{{ $accessArea }}"
+                                                            id="readPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
+                                                            @if (
+                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
+                                                                    return str_contains($permission->name, 'read') && str_contains($permission->name, $accessArea);
+                                                                })) checked @endif>
+                                                        <label
+                                                            for="readPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @php
+                                                    $updatePermissionExists = $areaPermissions->contains(function ($permission) {
+                                                        return str_contains($permission->name, 'update');
+                                                    });
+                                                @endphp
+                                                @if ($updatePermissionExists)
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" class="select-permission"
+                                                            name="permissions[]" value="{{ $accessArea }}.update"
+                                                            data-permission-name="{{ $accessArea }}.update"
+                                                            data-permission="update" data-area="{{ $accessArea }}"
+                                                            id="updatePermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
+                                                            @if (
+                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
+                                                                    return str_contains($permission->name, 'update') && str_contains($permission->name, $accessArea);
+                                                                })) checked @endif>
+                                                        <label
+                                                            for="updatePermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @php
+                                                    $deletePermissionExists = $areaPermissions->contains(function ($permission) {
+                                                        return str_contains($permission->name, 'delete');
+                                                    });
+                                                @endphp
+                                                @if ($deletePermissionExists)
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="checkbox" class="select-permission"
+                                                            name="permissions[]" value="{{ $accessArea }}.delete"
+                                                            data-permission-name="{{ $accessArea }}.delete"
+                                                            data-permission="delete" data-area="{{ $accessArea }}"
+                                                            id="deletePermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
+                                                            @if (
+                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
+                                                                    return str_contains($permission->name, 'delete') && str_contains($permission->name, $accessArea);
+                                                                })) checked @endif>
+                                                        <label
+                                                            for="deletePermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -116,7 +224,8 @@
                         </div>
                         {{-- /.card-body --}}
                         <div class="card-footer">
-                            <button type="submit" name="savePermissions" class="btn btn-primary">Save Permissions</button>
+                            <button type="submit" name="savePermissions" class="btn btn-primary">Save
+                                Permissions</button>
                         </div>
                         {{-- /.card-footer --}}
                     </div>
@@ -132,44 +241,8 @@
 @endsection
 
 @section('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script>
-        $(function() {
-            $("#dataList").DataTable({
-                "order": [
-                    [0, "asc"]
-                ],
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-        });
-        // JavaScript to handle "Select All" functionality
-        const selectAllCheckbox = document.getElementById('selectAll');
-        const permissionCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="permissionCheckBox"]');
-
-        selectAllCheckbox.addEventListener('change', () => {
-            const isChecked = selectAllCheckbox.checked;
-
-            permissionCheckboxes.forEach(checkbox => {
-                checkbox.checked = isChecked;
-            });
-        });
-
         // Save Role Name
         $('#submitForm').validate({
             errorElement: 'span',
@@ -185,31 +258,56 @@
             }
         });
 
-        // JavaScript to handle form submission
-        const form = document.getElementById('permissionsForm');
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const selectedPermissions = [];
-
-            permissionCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    const permissionName = checkbox.id.split('-').slice(2).join(
-                        '-'); // Extract permission name
-                    selectedPermissions.push(permissionName);
-                }
+        $(document).ready(function() {
+            // "Select All" checkbox click event
+            $('#selectAll').on('change', function() {
+                var isChecked = $(this).prop('checked');
+                $('.selectAllRow, .select-permission').prop('checked', isChecked);
+                updatePermissionsInput();
             });
 
-            // Add selected permissions to a hidden input field for submission
-            const hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = 'permissions';
-            hiddenInput.value = JSON.stringify(selectedPermissions);
-            form.appendChild(hiddenInput);
+            // "Select All Row" checkbox click event
+            $('.selectAllRow').on('change', function() {
+                var isChecked = $(this).prop('checked');
+                $(this).closest('tr').find('.select-permission').prop('checked', isChecked);
+                updateSelectAllCheckbox();
+                updatePermissionsInput();
+            });
 
-            // Submit the form
-            form.submit();
+            // Individual permission checkbox click event
+            $('.select-permission').on('change', function() {
+                updateSelectAllCheckbox();
+                updatePermissionsInput();
+            });
+
+            // Function to update "Select All" checkbox based on individual checkboxes
+            function updateSelectAllCheckbox() {
+                var allChecked = true;
+                $('.select-permission').each(function() {
+                    if (!$(this).prop('checked')) {
+                        allChecked = false;
+                        return false; // exit the loop if any checkbox is not checked
+                    }
+                });
+
+                // Update "Select All" checkbox
+                $('#selectAll').prop('checked', allChecked);
+            }
+
+            // Function to update hidden input field with selected permissions
+            function updatePermissionsInput() {
+                const selectedPermissions = [];
+                $('.select-permission:checked').each(function() {
+                    const permissionName = $(this).attr('data-permission-name');
+                    selectedPermissions.push(permissionName);
+                });
+
+                // Update hidden input field with selected permissions
+                $('#permissions').val(JSON.stringify(selectedPermissions));
+            }
+
+            // Check "Select All" initially
+            updateSelectAllCheckbox();
         });
     </script>
 @endsection

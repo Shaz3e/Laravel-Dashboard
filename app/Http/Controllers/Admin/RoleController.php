@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
@@ -103,6 +104,7 @@ class RoleController extends Controller
         $data = Role::find($id);
         if ($data) {
             $permissions = Permission::all();
+
             return view(
                 $this->view . 'edit',
                 compact(
@@ -188,7 +190,7 @@ class RoleController extends Controller
     public function updatePermissions(Request $request, string $id)
     {
         $role = Role::where('id', $id)->where('guard_name', 'admin')->first();
-
+    
         if (!$role) {
             // Handle the case where the role is not found
             Session::flash('error', [
@@ -196,33 +198,37 @@ class RoleController extends Controller
             ]);
             return redirect($this->route);
         }
-
+    
         // Decode JSON into an array
-        $permissions = json_decode($request->input('permissions'), true);
+        // $permissions = json_decode($request->input('permissions'), true);
 
+        $permissions = $request->input('permissions', []);
+        // return $permissions;
+    
         if (!is_array($permissions)) {
             // Handle the case where permissions is not an array
             // For example, you can set it to an empty array
             $permissions = [];
         }
-
+    
         // Detach all permissions from the role
         $role->permissions()->sync([]);
-
+    
         // Attach the selected permissions to the role
         foreach ($permissions as $permission) {
             // Check if the permission exists for the 'admin' guard
             $perm = Permission::where('name', $permission)->where('guard_name', 'admin')->first();
-
+    
             if ($perm) {
                 $role->givePermissionTo($perm);
             }
         }
-
+    
         Session::flash('success', [
             'text' => 'Permissions have been updated.',
         ]);
-
+    
         return redirect($this->route);
     }
+    
 }
