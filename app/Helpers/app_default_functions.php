@@ -396,47 +396,6 @@ function shortTextWithOutHtml($text, $limit = 25)
 }
 
 /**
- * Check Permissions for Blade
- */
-function canAccess($permissionName)
-{
-	$user = Auth::guard('admin')->user();
-
-	// Skip permission checks for user with ID 1 (super admin)
-	if ($user->id === 1) {
-		return true;
-	}
-
-	$roleNames = $user->getRoleNames(); // Get role names associated with the user
-
-	$hasPermission = false;
-
-	foreach ($roleNames as $roleName) {
-		$role = Role::where('name', $roleName)->first();
-
-		if ($role && $role->hasPermissionTo($permissionName)) {
-			$hasPermission = true;
-			break;
-		}
-	}
-	return $hasPermission;
-}
-
-/**
- * Check permission in controller
- */
-function hasAccess($access)
-{
-	if (!canAccess($access)) {
-        Session::flash('error', [
-            'text' => 'You are not authorized to access the page.',
-        ]);
-        // return redirect()->route('admin.dashboard');
-		abort(403);
-    }
-}
-
-/**
  * Google reCaptcha
  */
 function validateRecaptcha($recaptchaResponse)
@@ -478,4 +437,31 @@ function validateRecaptcha($recaptchaResponse)
 	]);
 
 	return false;
+}
+
+/**
+ * Check Authorize to access the page
+ * Use this function inside controller methods
+ */
+function authorize($permissionName)
+{
+	$user = Auth::guard('admin')->user();
+
+	// Skip permission checks for user with ID 1 (super admin)
+	if ($user->id === 1) {
+		return true;
+	}
+
+	$roleNames = $user->getRoleNames(); // Get role names associated with the user
+
+	foreach ($roleNames as $roleName) {
+		$role = Role::where('name', $roleName)->first();
+
+		if ($role && $role->hasPermissionTo($permissionName)) {
+			return true;
+			break;
+		}
+	}
+	
+	abort(403);
 }
