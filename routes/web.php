@@ -87,7 +87,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
 
-    Route::middleware('admin')->group(function () {
+    Route::middleware('auth:admin')->group(function () {
 
         /**
          * Admin Dashboard
