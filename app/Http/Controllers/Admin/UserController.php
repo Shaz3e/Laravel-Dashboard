@@ -45,7 +45,13 @@ class UserController extends Controller
             $dataSet->appends(['search' => $search]);
         } else {
             LogActivity::addToLog($request, 'viewed all clients');
-            $dataSet = User::paginate(10);
+            $dataSet = User::select(
+                'countries.flag as countryFlag',
+                'countries.name as countryName',
+                'users.*',
+            )
+            ->leftJoin('countries', 'users.country', 'countries.id')
+            ->paginate(10);
         }
 
         return view($this->view . 'index', compact('dataSet'));

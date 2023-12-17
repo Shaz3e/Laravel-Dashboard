@@ -65,10 +65,7 @@
                                     <th>Mobile</th>
                                     <th>Country</th>
                                     <th>Status</th>
-                                    @if (auth()->user()->can('clients.update') ||
-                                            auth()->user()->can('clients.delete'))
-                                        <th>Actions</th>
-                                    @endif
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -79,9 +76,12 @@
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->mobile }}</td>
                                         <td>
-                                            <img src="{{ asset('/') . $data->countryFlag }}" class="w-auto rounded mr-2"
-                                                style="max-height: 25px;" loading="lazy" decoding="async" />
-                                            {{ $data->countryName }}
+                                            @if ($data->country != null)
+                                                <img src="{{ asset('/') . $data->countryFlag }}"
+                                                    class="w-auto rounded mr-2" style="max-height: 25px;" loading="lazy"
+                                                    decoding="async" />
+                                                {{ $data->countryName }}
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($data->is_verified == 1)
@@ -90,29 +90,22 @@
                                                 <span class="badge badge-danger">Not Verified</span>
                                             @endif
                                         </td>
-                                        @if (auth()->user()->can('clients.update') ||
-                                                auth()->user()->can('clients.delete'))
-                                            <td>
-                                                @can('clients.update')
-                                                    {{-- Edit Request --}}
-                                                    <a class="btn btn-flat btn-primary"
-                                                        href="{{ route('admin.clients.edit', $data->id) }}" title="Edit">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </a>
-                                                @endcan
-                                                @can('clients.delete')
-                                                    <form action="{{ route('admin.clients.destroy', $data->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" onclick="DeleteFormSubmit(this)"
-                                                            class="btn btn-flat btn-danger">
-                                                            <i class="fa-solid fa-trash-can"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            </td>
-                                        @endif
+                                        <td>
+                                            {{-- Edit Request --}}
+                                            <a class="btn btn-flat btn-primary"
+                                                href="{{ route('admin.clients.edit', $data->id) }}" title="Edit">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </a>
+                                            <form action="{{ route('admin.clients.destroy', $data->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" onclick="DeleteFormSubmit(this)"
+                                                    class="btn btn-flat btn-danger">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
