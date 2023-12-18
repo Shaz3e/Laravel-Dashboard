@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        authorize($this->permission . 'list');
+        authorize($this->permission . 'read');
 
         // Search Client by Name, Email, Mobile 
         if ($request->search != null) {
@@ -137,7 +137,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        authorize($this->permission . 'show');
+        authorize($this->permission . 'read');
         $data = User::find($id);
         if (!$data) {
             return redirect($this->route)->with('error', [

@@ -84,8 +84,6 @@
                                     <tr>
                                         <th>Access Area</th>
                                         <th class="text-center">Select All</th>
-                                        <th class="text-center">List</th>
-                                        <th class="text-center">Show</th>
                                         <th class="text-center">Create</th>
                                         <th class="text-center">Read</th>
                                         <th class="text-center">Update</th>
@@ -107,50 +105,6 @@
                                                         data-area="{{ $accessArea }}" id="selectAll-{{ $accessArea }}">
                                                     <label for="selectAll-{{ $accessArea }}"></label>
                                                 </div>
-                                            </td>
-                                            <td class="text-center">
-                                                @php
-                                                    $listPermissionExists = $areaPermissions->contains(function ($permission) {
-                                                        return str_contains($permission->name, 'list');
-                                                    });
-                                                @endphp
-                                                @if ($listPermissionExists)
-                                                    <div class="icheck-success d-inline">
-                                                        <input type="checkbox" class="select-permission"
-                                                            name="permissions[]" value="{{ $accessArea }}.list"
-                                                            data-permission-name="{{ $accessArea }}.list"
-                                                            data-permission="list" data-area="{{ $accessArea }}"
-                                                            id="listPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
-                                                            @if (
-                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
-                                                                    return str_contains($permission->name, 'list') && str_contains($permission->name, $accessArea);
-                                                                })) checked @endif>
-                                                        <label
-                                                            for="listPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
-                                                    </div>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @php
-                                                    $showPermissionExists = $areaPermissions->contains(function ($permission) {
-                                                        return str_contains($permission->name, 'show');
-                                                    });
-                                                @endphp
-                                                @if ($showPermissionExists)
-                                                    <div class="icheck-success d-inline">
-                                                        <input type="checkbox" class="select-permission"
-                                                            name="permissions[]" value="{{ $accessArea }}.show"
-                                                            data-permission-name="{{ $accessArea }}.show"
-                                                            data-permission="show" data-area="{{ $accessArea }}"
-                                                            id="showPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"
-                                                            @if (
-                                                                $data->permissions->contains(function ($permission) use ($accessArea) {
-                                                                    return str_contains($permission->name, 'show') && str_contains($permission->name, $accessArea);
-                                                                })) checked @endif>
-                                                        <label
-                                                            for="showPermissionCheckBox-{{ $data->id }}-{{ $accessArea }}"></label>
-                                                    </div>
-                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 @php

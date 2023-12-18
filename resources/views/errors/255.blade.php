@@ -9,7 +9,7 @@
             <h2 class="headline text-warning"> 255</h2>
             <div class="error-content">
                 <h3><i class="fas fa-exclamation-triangle text-warning"></i> 255 SSH Connection Error.</h3>
-                <p>We could not find the page you were looking for. Meanwhile, you may
+                <p>SSH Connection error please contact your hosting service provider.
                     <a href="javascript:void(0)" onclick="history.go(-1)" class="text-theme">return back</a>.
                 </p>
             </div>

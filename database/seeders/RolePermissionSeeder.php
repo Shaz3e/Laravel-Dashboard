@@ -53,40 +53,37 @@ class RolePermissionSeeder extends Seeder
      private function createPermissions(): void
     {
         /**
-         * Read Permissions
-         */
-        $read_permissions = [
-            ['guard_name' => 'admin',  'name' => 'client read'],
-        ];
-        foreach ($read_permissions as $permissionData) {
-            Permission::create($permissionData);
-        }
-
-        /**
-         * Create Permissions
+         * create Permissions
          */
         $create_permissions = [
-            ['guard_name' => 'admin',  'name' => 'client create'],
+            ['guard_name' => 'admin',  'name' => 'clients.create'],
         ];
         foreach ($create_permissions as $permissionData) {
             Permission::create($permissionData);
         }
-
         /**
-         * Update Permissions
+         * read Permissions
+         */
+        $read_permissions = [
+            ['guard_name' => 'admin',  'name' => 'clients.read'],
+        ];
+        foreach ($read_permissions as $permissionData) {
+            Permission::create($permissionData);
+        }
+        /**
+         * update Permissions
          */
         $update_permissions = [
-            ['guard_name' => 'admin',  'name' => 'client update'],
+            ['guard_name' => 'admin',  'name' => 'clients.update'],
         ];
         foreach ($update_permissions as $permissionData) {
             Permission::create($permissionData);
         }
-
         /**
-         * Delete Permissions
+         * delete Permissions
          */
         $delete_permissions = [
-            ['guard_name' => 'admin',  'name' => 'client delete'],
+            ['guard_name' => 'admin',  'name' => 'clients.delete'],
         ];
         foreach ($delete_permissions as $permissionData) {
             Permission::create($permissionData);

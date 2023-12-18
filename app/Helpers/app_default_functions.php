@@ -443,25 +443,17 @@ function validateRecaptcha($recaptchaResponse)
  * Check Authorize to access the page
  * Use this function inside controller methods
  */
-function authorize($permissionName)
+function authorize($permission)
 {
 	$user = Auth::guard('admin')->user();
-
-	// Skip permission checks for user with ID 1 (super admin)
-	if ($user->id === 1) {
-		return true;
-	}
-
-	$roleNames = $user->getRoleNames(); // Get role names associated with the user
-
-	foreach ($roleNames as $roleName) {
-		$role = Role::where('name', $roleName)->first();
-
-		if ($role && $role->hasPermissionTo($permissionName)) {
-			return true;
-			break;
-		}
-	}
+	if ($user) {
+		$role = $user->getRoleNames()->first();
 	
+		if ($user->hasRole($role)) {
+			if ($user->hasPermissionTo($permission)) {
+				return true;
+			}
+		}
+	} 
 	abort(403);
 }
