@@ -187,17 +187,12 @@
             ApplySettings('Body-Small-Text', "#bodyTextSettingsCheck", "body", 'text-sm');
         }
 
-
-
         // Save Settings
         function SaveSettings(settingName, settingValue) {
             localStorage.setItem(settingName, settingValue);
             // Apply All Settings
             ApplyAllSettings();
         }
-
-
-
         // Dark Mode
         function ApplyDarkMode() {
 
@@ -233,8 +228,6 @@
                 }
             }
         }
-
-
 
         // Theme Color
         function ShowThemeColor() {
